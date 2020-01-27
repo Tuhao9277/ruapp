@@ -1,4 +1,145 @@
+page {
+  font-family: Helvetica;
+}
 .index {
   flex-direction: column;
+  background: url('./../../images/Screen.png') no-repeat;
+  background-color: #f9f7f7;
+  background-size: 100% 638px;
+  background-position-y: -65px;
+  padding: 0 32px;
+}
+.homeHeader {
+  flex-direction: column;
   width: 100%;
+}
+.welcomeTip {
+  padding-top: 88px;
+  font-size: 52px;
+  color: #fff;
+  line-height: 31px;
+}
+.welcomeSubTip {
+  padding-top: 60px;
+  font-size: 32px;
+  color: #fff;
+  line-height: 19px;
+}
+.homeSwiper {
+  padding-top: 20px;
+  height: 480px;
+}
+.demo-text-1 {
+  height: 100%;
+}
+.homeTitle {
+  font-size: 44px;
+  color: #555;
+  line-height: 52px;
+}
+.homeSubTitle {
+  font-size: 24px;
+  color: #555;
+  line-height: 28px;
+}
+.homeOrder {
+  width: 100%;
+}
+.orderTabs {
+  margin: 52px 0 40px 0;
+  white-space: nowrap;
+  width: 100%;
+}
+.orderTabItem {
+  width: 180px;
+  height: 180px;
+  display: inline-block;
+  margin-right: 20px;
+  background: #ffffff;
+  box-shadow: 0px 4px 28px 0px rgba(0, 0, 0, 0.1);
+  border-radius: 12px;
+}
+.orderTabIcon {
+  width: 86px;
+  height: 84px;
+  &.coffee {
+    background: url('./../../images/coffee-cup.png') no-repeat;
+    background-size: contain;
+  }
+  &.tea {
+    background: url('./../../images/tea-cup.png') no-repeat;
+    background-size: contain;
+  }
+  &.coldDrinks {
+    background: url('./../../images/latte-cup.png') no-repeat;
+    background-size: contain;
+  }
+  &.sandWichs {
+    background: url('./../../images/burger.png') no-repeat;
+    background-size: contain;
+  }
+}
+.orderTabname {
+  padding-top: 14px;
+  font-size: 20px;
+  color: #555555;
+  line-height: 24px;
+}
+.exploreTabs {
+  display: flex;
+  justify-content: space-around;
+  margin: 32px 0 40px 0;
+  width: 100%;
+}
+.exploreTabItem {
+  width: 216px;
+  height: 180px;
+  display: inline-block;
+  background: #ffffff;
+  box-shadow: 0px 4px 28px 0px rgba(0, 0, 0, 0.1);
+  border-radius: 12px;
+}
+.exploreTabIcon {
+  width: 48px;
+  height: 88px;
+  &.fullMenu {
+    background: url('./../../images/menu.png') no-repeat;
+    background-size: contain;
+  }
+  &.products {
+    background: url('./../../images/pack.png') no-repeat;
+    background-size: contain;
+  }
+  &.branche {
+    background: url('./../../images/branches.png') no-repeat;
+    background-size: contain;
+  }
+}
+.exploreTabname {
+  padding-top: 14px;
+  font-size: 20px;
+  color: #555555;
+  line-height: 24px;
+}
+.flexWrapper {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+.homeMenu {
+  :global {
+    .at-tabs__header {
+      background: transparent;
+    }
+    .at-tabs__item--active {
+      color: #000;
+      font-weight: 500;
+      font-size: 44px;
+    }
+    .at-tabs__item{
+      padding: 0;
+    }
+  }
 }

@@ -1,12 +1,10 @@
-import { ComponentClass } from 'react'
-import Taro, { Component, Config } from '@tarojs/taro'
-import { View, Button, Text } from '@tarojs/components'
-import { connect } from '@tarojs/redux'
-
-import { add, minus, asyncAdd } from '../../actions/counter'
-
-import './index.less'
-
+import { ComponentClass } from 'react';
+import Taro, { Component, Config } from '@tarojs/taro';
+import { ScrollView, View, Image, Text, Swiper, SwiperItem } from '@tarojs/components';
+import { connect } from '@tarojs/redux';
+import banner1 from './../../images/offers@2x.png';
+import './index.less';
+import HomeMenu from './HomeMenu';
 // #region 书写注意
 //
 // 目前 typescript 版本还无法在装饰器模式下将 Props 注入到 Taro.Component 中的 props 属性
@@ -16,75 +14,131 @@ import './index.less'
 // ref: https://github.com/DefinitelyTyped/DefinitelyTyped/issues/20796
 //
 // #endregion
-
+interface OrderMenuK {
+  title: string;
+  rowKey: string;
+}
 type PageStateProps = {
-  counter: {
-    num: number
-  }
-}
+  orderMenu: [];
+  exploreMenu: [];
+};
 
-type PageDispatchProps = {
-  add: () => void
-  dec: () => void
-  asyncAdd: () => any
-}
+type PageOwnProps = {};
 
-type PageOwnProps = {}
+type PageState = {};
 
-type PageState = {}
-
-type IProps = PageStateProps & PageDispatchProps & PageOwnProps
+type IProps = PageStateProps & PageOwnProps;
 
 interface Index {
   props: IProps;
 }
 
-@connect(({ counter }) => ({
-  counter
-}), (dispatch) => ({
-  add () {
-    dispatch(add())
-  },
-  dec () {
-    dispatch(minus())
-  },
-  asyncAdd () {
-    dispatch(asyncAdd())
-  }
+@connect(({ orderTab }) => ({
+  orderMenu: orderTab.orderMenu,
+  exploreMenu: orderTab.exploreMenu,
 }))
 class Index extends Component {
-
-    /**
+  /**
    * 指定config的类型声明为: Taro.Config
    *
    * 由于 typescript 对于 object 类型推导只能推出 Key 的基本类型
    * 对于像 navigationBarTextStyle: 'black' 这样的推导出的类型是 string
    * 提示和声明 navigationBarTextStyle: 'black' | 'white' 类型冲突, 需要显示声明类型
    */
-    config: Config = {
-    navigationBarTitleText: '首页'
+
+  componentWillReceiveProps(nextProps) {
+    console.log(this.props, nextProps);
   }
+  navigateToOrder = (tabName: string) => {
+    console.log(tabName);
+  };
+  navigateToExplore = (tabName: string) => {
+    console.log(tabName);
+  };
+  renderOrderTab = () => {
+    const { orderMenu } = this.props;
+    return orderMenu.map((item: OrderMenuK) => {
+      const cls = 'orderTabIcon ' + item.rowKey;
+      const name = item.title;
 
-  componentWillReceiveProps (nextProps) {
-    console.log(this.props, nextProps)
-  }
+      return (
+        <View key={cls} className="orderTabItem" onClick={() => this.navigateToOrder(item.rowKey)}>
+          <View className="flexWrapper">
+            <View className={cls} />
+            <View className="orderTabname">{name}</View>
+          </View>
+        </View>
+      );
+    });
+  };
+  renderExploreTab = () => {
+    const { exploreMenu } = this.props;
+    return exploreMenu.map((item: OrderMenuK) => {
+      const cls = 'exploreTabIcon ' + item.rowKey;
+      const name = item.title;
 
-  componentWillUnmount () { }
-
-  componentDidShow () { }
-
-  componentDidHide () { }
-
-  render () {
+      return (
+        <View
+          key={cls}
+          className="exploreTabItem"
+          onClick={() => this.navigateToExplore(item.rowKey)}
+        >
+          <View className="flexWrapper">
+            <View className={cls} />
+            <View className="exploreTabname">{name}</View>
+          </View>
+        </View>
+      );
+    });
+  };
+  config: Config = {
+    navigationBarTitleText: 'STARBUCKS',
+  };
+  render() {
     return (
-      <View className='index'>
-        <Button className='add_btn' onClick={this.props.add}>+</Button>
-        <Button className='dec_btn' onClick={this.props.dec}>-</Button>
-        <Button className='dec_btn' onClick={this.props.asyncAdd}>async</Button>
-        <View><Text>{this.props.counter.num}</Text></View>
-        <View><Text>Hello, World</Text></View>
+      <View className="index">
+        <View className="homeHeader">
+          <View className="welcomeTip">
+            早上好,<Text>Mamoru</Text>
+          </View>
+          <View className="welcomeSubTip">
+            <Text>人生得意须尽欢，莫使☕️空对月</Text>
+          </View>
+        </View>
+        <Swiper
+          className="homeSwiper"
+          indicatorColor="#fff"
+          indicatorActiveColor="#296144"
+          circular
+          indicatorDots
+          autoplay
+        >
+          <SwiperItem>
+            <View className="demo-text-1">
+              <Image style="width: 100%;height: 100%" src={banner1} mode="aspectFit" />
+            </View>
+          </SwiperItem>
+        </Swiper>
+        <View className="homeOrder">
+          <View className="homeTitle">
+            <Text>What are you ordering?</Text>
+          </View>
+          <ScrollView scrollX className="orderTabs">
+            {this.renderOrderTab()}
+          </ScrollView>
+        </View>
+        <View className="homeExplore">
+          <View className="homeTitle">
+            <Text>Explore</Text>
+          </View>
+          <Text className="homeSubTitle">All our services</Text>
+          <View className="exploreTabs">{this.renderExploreTab()}</View>
+        </View>
+        <View className="homeMenu">
+          <HomeMenu />
+        </View>
       </View>
-    )
+    );
   }
 }
 
@@ -95,4 +149,4 @@ class Index extends Component {
 //
 // #endregion
 
-export default Index as ComponentClass<PageOwnProps, PageState>
+export default Index as ComponentClass<PageOwnProps, PageState>;
