@@ -121,7 +121,7 @@ class Index extends Component {
         </Swiper>
         <View className="homeOrder">
           <View className="homeTitle">
-            <Text>What are you ordering?</Text>
+            <Text>想来点什么</Text>
           </View>
           <ScrollView scrollX className="orderTabs">
             {this.renderOrderTab()}
@@ -129,7 +129,7 @@ class Index extends Component {
         </View>
         <View className="homeExplore">
           <View className="homeTitle">
-            <Text>Explore</Text>
+            <Text>探索</Text>
           </View>
           <Text className="homeSubTitle">All our services</Text>
           <View className="exploreTabs">{this.renderExploreTab()}</View>

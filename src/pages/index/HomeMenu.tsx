@@ -8,6 +8,7 @@ interface ProductListItem {
   title: string;
   body: string;
   id: string;
+  productId: string;
   preview: string;
   url: string;
   popular: string;
@@ -31,7 +32,15 @@ export default class HomeMenu extends Taro.Component<K, T> {
   }
   renderGussLike() {
     return Object.values(gussusLike).map((item: ProductListItem) => {
-      return <ProductItem key={item.id} imageUrl={item.preview} title={item.title} price={item.price} />;
+      return (
+        <ProductItem
+          key={item.id}
+          productId={item.productId}
+          imageUrl={item.preview}
+          title={item.title}
+          price={item.price}
+        />
+      );
     });
   }
   render() {

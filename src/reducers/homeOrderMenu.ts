@@ -2,33 +2,33 @@
 const INITIAL_STATE = {
   orderMenu:[
     {
-      title:'Coffee',
+      title:'咖啡',
       rowKey:'coffee'
     },
     {
-      title:'Tea',
+      title:'茶',
       rowKey:'tea'
     },
     {
-      title:'Cold Drinks',
+      title:'冷饮',
       rowKey:'coldDrinks'
     },
     {
-      title:'Sandwichs',
+      title:'三明治',
       rowKey:'sandWichs'
     },
   ],
   exploreMenu:[
     {
-      title:'Full Menu',
+      title:'菜单',
       rowKey:'fullMenu'
     },
     {
-      title:'Products',
+      title:'产品',
       rowKey:'products'
     },
     {
-      title:'Branche',
+      title:'门店',
       rowKey:'branche'
     },
   ]
