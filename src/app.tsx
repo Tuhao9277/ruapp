@@ -1,11 +1,11 @@
-import Taro, { Component, Config } from '@tarojs/taro'
-import { Provider } from '@tarojs/redux'
+import Taro, { Component, Config } from '@tarojs/taro';
+import { Provider } from '@tarojs/redux';
 
-import Index from './pages/index'
+import Index from './pages/index';
 
-import store from './store'
+import store from './store';
 
-import './app.scss'
+import './app.scss';
 
 // 如果需要在 h5 环境中开启 React Devtools
 // 取消以下注释：
@@ -14,7 +14,6 @@ import './app.scss'
 // }
 
 class App extends Component {
-
   /**
    * 指定config的类型声明为: Taro.Config
    *
@@ -23,14 +22,13 @@ class App extends Component {
    * 提示和声明 navigationBarTextStyle: 'black' | 'white' 类型冲突, 需要显示声明类型
    */
 
+  componentDidMount() {}
 
-  componentDidMount () {}
+  componentDidShow() {}
 
-  componentDidShow () {}
+  componentDidHide() {}
 
-  componentDidHide () {}
-
-  componentDidCatchError () {}
+  componentDidCatchError() {}
 
   config: Config = {
     pages: [
@@ -40,46 +38,52 @@ class App extends Component {
       'pages/my/my',
       'pages/register/register',
       'pages/productDisplay/productDisplay',
-
+      'pages/menu/menu',
     ],
     window: {
       backgroundTextStyle: 'light',
       navigationBarBackgroundColor: '#296144',
       navigationBarTitleText: 'WeChat',
-      navigationBarTextStyle: 'white'
+      navigationBarTextStyle: 'white',
     },
-    tabBar:{
-      list:[
-       {
-          text:'Home',
-          iconPath:'./images/home.png',
-          selectedIconPath:'./images/home-active.png',
-          pagePath:'pages/index/index',
+    tabBar: {
+      list: [
+        {
+          text: '首页',
+          iconPath: './images/home.png',
+          selectedIconPath: './images/home-active.png',
+          pagePath: 'pages/index/index',
         },
         {
-          text:'Pay',
-          iconPath:'./images/pay.png',
-          selectedIconPath:'./images/pay-active.png',
-          pagePath:'pages/pay/pay',
+          text: '星礼卡',
+          iconPath: './images/pay.png',
+          selectedIconPath: './images/pay-active.png',
+          pagePath: 'pages/pay/pay',
         },
         {
-          text:'Me',
-          iconPath:'./images/me.png',
-          selectedIconPath:'./images/me-active.png',
-          pagePath:'pages/my/my',
+          text: '菜单',
+          iconPath: './images/coffee.png',
+          selectedIconPath: './images/coffee-active.png',
+          pagePath: 'pages/menu/menu',
         },
-      ]
+        {
+          text: '我的',
+          iconPath: './images/me.png',
+          selectedIconPath: './images/me-active.png',
+          pagePath: 'pages/my/my',
+        },
+      ],
     },
-  }
+  };
   // 在 App 类中的 render() 函数没有实际作用
   // 请勿修改此函数
-  render () {
+  render() {
     return (
       <Provider store={store}>
         <Index />
       </Provider>
-    )
+    );
   }
 }
 
-Taro.render(<App />, document.getElementById('app'))
+Taro.render(<App />, document.getElementById('app'));

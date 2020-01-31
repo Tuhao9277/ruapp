@@ -1,5 +1,5 @@
 import Taro from '@tarojs/taro';
-import { AtForm, AtInput, AtButton } from 'taro-ui';
+import { AtForm, AtInput, AtButton, AtMessage } from 'taro-ui';
 import { View, Text, Image } from '@tarojs/components';
 import { connect } from '@tarojs/redux';
 import AtHeader from './../../components/AtHeader';
@@ -42,18 +42,24 @@ class Index extends Taro.Component<K, T> {
   }
   onSubmit(event) {
     this.setState({
-      sumbitLoading:true
-    })
+      sumbitLoading: true,
+    });
     api.post('login', event.detail.value).then(res => {
       if (res.data.code === 0) {
         authAction.login(event.detail.value.openid);
+        this.showMessage(res.data.msg)
         lsSave('openid', event.detail.value.openid);
         Taro.navigateBack();
-        console.log(event.detail.value.openid);
       }
       this.setState({
-        sumbitLoading:false
-      })
+        sumbitLoading: false,
+      });
+    });
+  }
+  showMessage(msg: string) {
+    Taro.atMessage({
+      message: msg,
+      type: 'success',
     });
   }
   showToast() {
@@ -66,6 +72,7 @@ class Index extends Taro.Component<K, T> {
     const { openid, password, sumbitLoading } = this.state;
     return (
       <View>
+        <AtMessage />
         <AtHeader title="欢迎来到星享俱乐部" />
         <AtForm className="dd-padding loginForm" onSubmit={this.onSubmit.bind(this)}>
           <AtInput

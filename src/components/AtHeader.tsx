@@ -1,5 +1,6 @@
 import Taro from '@tarojs/taro';
 import { View, Text } from '@tarojs/components';
+import { AtAvatar } from 'taro-ui'
 import './AtHeader.less';
 
 interface K {
@@ -14,6 +15,7 @@ export default class AtHeader extends Taro.Component<K, T> {
     return (
       <View className="dd-padding AtHeaderWrapper">
         <Text>{title}</Text>
+        <AtAvatar circle text='儒'></AtAvatar>
       </View>
     );
   }

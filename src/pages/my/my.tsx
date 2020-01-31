@@ -1,10 +1,11 @@
 import { ComponentClass } from 'react';
 import Taro, { Component, Config } from '@tarojs/taro';
-import { View, Text } from '@tarojs/components';
-
+import { connect } from '@tarojs/redux';
+import { View } from '@tarojs/components';
+import { AtList, AtListItem, AtMessage } from 'taro-ui';
 import './my.less';
 import AtHeader from './../../components/AtHeader';
-import { AtList, AtListItem } from 'taro-ui';
+import LoginTip from './../../components/LoginTip';
 
 // #region 书写注意
 //
@@ -16,7 +17,9 @@ import { AtList, AtListItem } from 'taro-ui';
 //
 // #endregion
 
-type PageStateProps = {};
+type PageStateProps = {
+  status: boolean;
+};
 
 type PageOwnProps = {};
 
@@ -27,7 +30,9 @@ type IProps = PageStateProps & PageOwnProps;
 interface My {
   props: IProps;
 }
-
+@connect(({ user }) => ({
+  status: user.status,
+}))
 class My extends Component {
   /**
    * 指定config的类型声明为: Taro.Config
@@ -44,15 +49,18 @@ class My extends Component {
   config: Config = {
     navigationBarTitleText: '我的',
   };
-  navigateToLogin = () => {
-    Taro.navigateTo({
-      url: '/pages/login/login',
-    });
-  };
+  showMessage(){
+    Taro.atMessage({
+      'message': '暂未开放',
+      'type': 'info',
+    })
+  }
 
   render() {
+    const { status } = this.props;
     return (
       <View>
+        <AtMessage />
         <AtHeader title="Hello!" />
         <AtList>
           <AtListItem
@@ -73,14 +81,12 @@ class My extends Component {
             thumb="http://img12.360buyimg.com/jdphoto/s72x72_jfs/t10660/330/203667368/1672/801735d7/59c85643N31e68303.png"
           />
           <AtListItem
+            onClick={this.showMessage.bind(this)}
             title="帮助与反馈"
             thumb="http://img12.360buyimg.com/jdphoto/s72x72_jfs/t10660/330/203667368/1672/801735d7/59c85643N31e68303.png"
           />
         </AtList>
-        <View className="myWrapper">
-          <Text>登录星巴克App享受更多精彩服务</Text>
-          <Text onClick={() => this.navigateToLogin()}>立即登录</Text>
-        </View>
+        {!status && <LoginTip />}
       </View>
     );
   }

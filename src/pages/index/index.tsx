@@ -3,8 +3,8 @@ import Taro, { Component, Config } from '@tarojs/taro';
 import { ScrollView, View, Image, Text, Swiper, SwiperItem } from '@tarojs/components';
 import { connect } from '@tarojs/redux';
 import banner1 from './../../images/offers@2x.png';
-import './index.less';
 import HomeMenu from './HomeMenu';
+import  './index.less';
 // #region 书写注意
 //
 // 目前 typescript 版本还无法在装饰器模式下将 Props 注入到 Taro.Component 中的 props 属性
@@ -137,6 +137,7 @@ class Index extends Component {
         <View className="homeMenu">
           <HomeMenu />
         </View>
+
       </View>
     );
   }

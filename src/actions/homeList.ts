@@ -1,13 +1,20 @@
-import { bindActionCreators } from 'redux'
-import {
-  GET_CATEGORY_LIST,
-} from '../constants/list'
-import store from '../store'
-import { createApiAction } from './index'
-import api from '../service/api'
+import { bindActionCreators } from 'redux';
+import { GET_CATEGORY_LIST, CHANGE_KEY, ADD_SELECT_ITEM, MINUS_SELECT_ITEM } from '../constants/list'
+import store from '../store';
+import { createApiAction, createAction } from './index';
+import api from '../service/api';
 
 // 请求api
-export const list = createApiAction(GET_CATEGORY_LIST, () => api.get('category/list'))
-export default bindActionCreators({
-  list,
-}, store.dispatch)
+const getMenuList = createApiAction(GET_CATEGORY_LIST, () => api.get('product/list'));
+const changeMenuKey = createAction(CHANGE_KEY);
+const addSelectItem = createAction(ADD_SELECT_ITEM);
+const minusSelectItem = createAction(MINUS_SELECT_ITEM);
+export default bindActionCreators(
+  {
+    addSelectItem,
+    minusSelectItem,
+    getMenuList,
+    changeMenuKey,
+  },
+  store.dispatch,
+);

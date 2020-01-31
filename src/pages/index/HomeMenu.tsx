@@ -51,7 +51,7 @@ export default class HomeMenu extends Taro.Component<K, T> {
           <View style="padding:10px 0;text-align: left;">{this.renderGussLike()}</View>
         </AtTabsPane>
         <AtTabsPane current={this.state.current} index={1}>
-          <View style="padding:10px;text-align: center;">标签页二的内容</View>
+          <View style="padding:10px;text-align: center;">{}</View>
         </AtTabsPane>
         <AtTabsPane current={this.state.current} index={2}>
           <View style="padding:10px;text-align: center;">标签页三的内容</View>
