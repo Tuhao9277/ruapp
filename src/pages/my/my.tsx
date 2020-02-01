@@ -6,7 +6,7 @@ import { AtList, AtListItem, AtMessage } from 'taro-ui';
 import './my.less';
 import AtHeader from './../../components/AtHeader';
 import LoginTip from './../../components/LoginTip';
-
+import userAction from './../../actions/authAction';
 // #region 书写注意
 //
 // 目前 typescript 版本还无法在装饰器模式下将 Props 注入到 Taro.Component 中的 props 属性
@@ -19,6 +19,8 @@ import LoginTip from './../../components/LoginTip';
 
 type PageStateProps = {
   status: boolean;
+  openid: string;
+  userInfo: {};
 };
 
 type PageOwnProps = {};
@@ -32,6 +34,8 @@ interface My {
 }
 @connect(({ user }) => ({
   status: user.status,
+  openid: user.openid,
+  userInfo: user.userInfo,
 }))
 class My extends Component {
   /**
@@ -41,7 +45,13 @@ class My extends Component {
    * 对于像 navigationBarTextStyle: 'black' 这样的推导出的类型是 string
    * 提示和声明 navigationBarTextStyle: 'black' | 'white' 类型冲突, 需要显示声明类型
    */
-
+  constructor(props) {
+    super(props);
+    const { status, openid } = props;
+    if (status) {
+      userAction.getUserInfo({ openid });
+    }
+  }
   componentWillReceiveProps(nextProps) {
     console.log(this.props, nextProps);
   }
@@ -49,20 +59,26 @@ class My extends Component {
   config: Config = {
     navigationBarTitleText: '我的',
   };
-  showMessage(){
+  showMessage() {
     Taro.atMessage({
-      'message': '暂未开放',
-      'type': 'info',
-    })
+      message: '暂未开放',
+      type: 'info',
+    });
   }
 
   render() {
-    const { status } = this.props;
+    const { status,userInfo } = this.props;
+    const {username，account} = userInfo
     return (
       <View>
         <AtMessage />
-        <AtHeader title="Hello!" />
+        <AtHeader title="Hello!" username={username} />
         <AtList>
+          <AtListItem
+            title="我的余额"
+            thumb="http://img12.360buyimg.com/jdphoto/s72x72_jfs/t10660/330/203667368/1672/801735d7/59c85643N31e68303.png"
+            extraText={`${account}元`}
+          />
           <AtListItem
             title="星享好礼"
             thumb="https://img12.360buyimg.com/jdphoto/s72x72_jfs/t6160/14/2008729947/2754/7d512a86/595c3aeeNa89ddf71.png"
@@ -71,10 +87,6 @@ class My extends Component {
           <AtListItem
             title="追星站"
             thumb="http://img10.360buyimg.com/jdphoto/s72x72_jfs/t5872/209/5240187906/2872/8fa98cd/595c3b2aN4155b931.png"
-          />
-          <AtListItem
-            title="消费记录"
-            thumb="http://img12.360buyimg.com/jdphoto/s72x72_jfs/t10660/330/203667368/1672/801735d7/59c85643N31e68303.png"
           />
           <AtListItem
             title="设置"

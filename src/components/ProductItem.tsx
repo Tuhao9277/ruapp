@@ -3,7 +3,7 @@ import Taro from '@tarojs/taro';
 import { connect } from '@tarojs/redux';
 import { View, Text, Image } from '@tarojs/components';
 import './productItem.less';
-import productAction from './../actions/homeList';
+import productAction from '../actions/product';
 
 interface K {}
 type PageStateProps = {
@@ -81,6 +81,7 @@ class ProductItem extends Taro.Component {
             ></View>
           </View>
         </View>
+
       </View>
     );
   }

@@ -1,4 +1,5 @@
 import { getCurrentPages } from '@tarojs/taro';
+import moment from 'moment';
 
 export const promisify = (func, ctx) => {
   // 返回一个新的function
@@ -133,11 +134,14 @@ export function lsReadArr(key: string) {
         lsRemove(key);
         return undefined;
       }
-    } catch(e) {
+    } catch (e) {
       lsRemove(key);
       return undefined;
     }
   } else {
     return undefined;
   }
+}
+export function formattedTime(time: number) {
+  return moment(time * 1000).format('YYYY-MM-DD HH:mm:ss');
 }

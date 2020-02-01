@@ -25,3 +25,12 @@ export const RESULT_STATUS = {
   SUCCESS:0,
   SIGNATURE_FAILED: 1000  // 签名失败
 }
+export enum OrderStatus {
+  '进行中',
+  '已完成',
+  '已取消'
+}
+export enum PayStatus {
+  '未付款',
+  '已付款'
+}

@@ -8,15 +8,48 @@
 }
 .menuTabWrapper {
   > .at-tabs__header {
+    padding-top: 80px;
     width: 80%;
     background: transparent;
-     .at-tabs__item--active {
+    .at-tabs__item--active {
       color: #000;
       font-weight: 500;
       font-size: 44px;
     }
-     .at-tabs__item {
+    .at-tabs__item {
       padding: 0;
+    }
+  }
+}
+.postShopBar {
+  position: fixed;
+  right: 60px;
+  bottom: 120px;
+  z-index: 1;
+}
+.noticeBar {
+  padding: 20px 0;
+  width: 100%;
+  position: fixed;
+  bottom: 100px;
+}
+.orderInfo {
+  display: flex;
+  justify-content: space-between;
+}
+.orderCancel {
+  color: #999;
+}
+.orderPayTip {
+  color: #dc1c1c;
+}
+.orderListWrapper {
+  padding-top: 30px;
+  min-height: 600px;
+  :global {
+    .at-card {
+      border: none;
+      box-shadow: 0px 6px 18px 10px rgba(0, 0, 0, 0.1);
     }
   }
 }

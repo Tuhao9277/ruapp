@@ -5,3 +5,5 @@ export const CHANGE_KEY = 'CHANGE_KEY'
 export const ADD_SELECT_ITEM = "ADD_SELECT_ITEM"
 export const MINUS_SELECT_ITEM = "MINUS_SELECT_ITEM"
 export const CLEAR_CAR = "CLEAR_CAR"
+export const GET_ORDER_LIST = "GET_ORDER_LIST"
+
