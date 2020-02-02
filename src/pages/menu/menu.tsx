@@ -140,6 +140,7 @@ class Menu extends Component {
       return (
         <AtCard
           key={item.orderId}
+          className="orderItemWrapper"
           note={formattedTime(createTime)}
           extra={item.buyerAddress}
           title={`订单号：${item.orderId}`}

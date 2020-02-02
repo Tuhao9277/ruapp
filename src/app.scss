@@ -1,4 +1,4 @@
-$color-brand: #296144;
+$color-brand: #279e68;
 @import '~taro-ui/dist/style/index.scss'; // 全局引入一次即可
 ::-webkit-scrollbar{width:0;height:1px}
 ::-webkit-scrollbar-thumb{
@@ -8,6 +8,6 @@ $color-brand: #296144;
 .dd-padding{
   padding: 0 20px;
 }
-.at-icon{
-  color: #296144;
+.at-icon-chevron-left{
+  color: $color-brand;
 }

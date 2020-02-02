@@ -2,7 +2,7 @@ import { ComponentClass } from 'react';
 import Taro, { Component } from '@tarojs/taro';
 import { View, Text } from '@tarojs/components';
 import { connect } from '@tarojs/redux';
-import { AtNavBar, AtButton } from 'taro-ui';
+import { AtNavBar, AtButton, AtNoticebar } from 'taro-ui';
 import './ShopBar.less';
 import { Ifood } from '../menu/menu';
 import { IproductList } from './../../reducers/productList';
@@ -95,8 +95,11 @@ class ShopBar extends Component {
           color="#000"
           leftIconType="chevron-left"
         />
-        <Text>购物车({data.dotNum})</Text>
-        <View className="shopProductWrapper">{this.renderTabsPane(data.chooseList)}</View>
+        <Text className="dd-padding">购物车({data.dotNum})</Text>
+        <AtNoticebar className="dd-padding shopBarNotice" icon="volume-plus">
+          点单满80免配送费，再送买一张送一礼券
+        </AtNoticebar>
+        <View className="dd-padding shopProductWrapper">{this.renderTabsPane(data.chooseList)}</View>
         {!!data.dotNum && (
           <AtButton className="shopBtn" type="primary" onClick={() => this.handleRouterTo(data)}>
             结算：¥{data.totalPrice}

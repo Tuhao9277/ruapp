@@ -1,22 +1,40 @@
 import { ComponentClass } from 'react';
 import Taro, { Component } from '@tarojs/taro';
-import { View, Text } from '@tarojs/components';
+import { View, Image, Text } from '@tarojs/components';
+import { AtIcon, AtButton, AtFloatLayout, AtRadio } from 'taro-ui';
 import { connect } from '@tarojs/redux';
 import { formatterTime } from './../../utils';
 import './order.less';
 import ANavBar from './../../components/ANavBar';
-import { AtIcon } from 'taro-ui';
+import userAction from './../../actions/authAction';
+import api from './../../service/api';
 
 type PageStateProps = {};
 
 type PageDispatchProps = {};
-
+interface OrderListItem {
+  id: string;
+  name: string;
+  price: number;
+  description: string;
+  icon: string;
+  chooseCount: number;
+}
 type PageOwnProps = {
   currentOrder: {};
+  chooseList: OrderListItem[];
+  account: number;
+  openid: string;
 };
 
 type PageState = {
-  name: string;
+  fee: number;
+  coupon: number;
+  orderId: string;
+  openPay: boolean;
+  payMethod: string;
+  payLoading: boolean;
+  prePayLoading: boolean;
 };
 
 type IProps = PageStateProps & PageDispatchProps & PageOwnProps;
@@ -26,23 +44,137 @@ interface Order {
   state: PageState;
 }
 
-@connect(({ order }) => ({
+@connect(({ order, user }) => ({
   currentOrder: order.currentOrder,
+  chooseList: order.currentOrder.chooseList,
+  account: user.userInfo.account,
+  openid: user.openid,
 }))
 class Order extends Component {
   constructor(props) {
     super(props);
+    this.state = {
+      fee: 12,
+      coupon: 10,
+      openPay: false,
+      payMethod: 'rupay',
+      payLoading: false,
+      orderId: '',
+      prePayLoading: false,
+    };
+    userAction.getUserInfo({ openid: props.openid });
+  }
+  renderOrderProduct() {
+    const { chooseList } = this.props.currentOrder;
+    return chooseList.map(({ id, icon, name, description, price, chooseCount }) => {
+      return (
+        <View className="productItemWrapper" key={id}>
+          <Image className="foodOrderImg" mode="scaleToFill" src={icon} />
+          <View className="foodOrderRight">
+            <Text className="foodOrderName">{name}</Text>
+            <Text className="foodOrderDesc two-line">{description}</Text>
+            <View className="foodOrderPrice">
+              <Text>×{chooseCount}</Text>
+              <Text>
+                ¥<Text className="foodOrderPriceHighLight">{price}</Text>
+              </Text>
+            </View>
+          </View>
+        </View>
+      );
+    });
+  }
+  handleChangePayMethod(value) {
+    this.setState({
+      payMethod: value,
+    });
+  }
+  goToPay() {
+    const { orderId } = this.state;
+    console.log(orderId)
+    const { openid } = this.props;
+    this.setState({
+      payLoading: true,
+    });
+    if (this.state.payMethod !== 'rupay') {
+      this.setState({
+        payLoading: false,
+      });
+      Taro.showToast({
+        title: '暂未开放',
+        icon: 'none',
+      });
+      return;
+    }
+    const params = {
+      openid,
+      orderId,
+    };
+    api.post('order/pay', params).then(res => {
+      this.setState({
+        payLoading: false,
+      });
+      if (res.data.code === 0) {
+        Taro.showToast({
+          title: '支付成功',
+          icon: 'success',
+          duration: 1000,
+        }).then(() => {
+          setTimeout(() => {
+            Taro.redirectTo({
+              url: `/pages/orderSuc/orderSuc?orderId=${orderId}`,
+            });
+          }, 1000);
+        });
+      }
+    });
+  }
+  handlePayDisplay() {
+    this.setState({
+      prePayLoading:true
+    })
+    const { openid, chooseList } = this.props;
+    const items = chooseList.map(item => ({
+      productId: item.id,
+      productQuantity: item.chooseCount,
+    }));
+    const params = {
+      name: '儒先生',
+      phone: '18868822111',
+      address: '望京街道，望京西园三区3单元1001室',
+      openid,
+      items,
+    };
+    api.post('order/create', params).then(res => {
+      this.setState({
+        prePayLoading:false
+      })
+      if (res.data.code === 0) {
+        this.setState((prevState: PageState) => ({
+          orderId:res.data.data.orderId,
+          openPay: !prevState.openPay,
+        }));
+      }
+    });
+  }
+  handleClosePayMethod() {
+    const { orderId } = this.state;
+    Taro.redirectTo({
+      url: `/pages/orderSuc/orderSuc?orderId=${orderId}`,
+    });
   }
   render() {
+    const { currentOrder, account } = this.props;
+    const { totalPrice } = currentOrder;
     return (
       <View>
         <ANavBar />
         <View className="dd-padding orderWrapper">
-          <Text>创建订单</Text>
+          <Text className="orderTitle">创建订单</Text>
           <View>
             <Text className="lastTime">约{formatterTime(Date.now() + 30 * 60 * 1000)}后送达</Text>
           </View>
-          <View className="userInfoWrapper">
+          <View className="orderUserInfoWrapper">
             <View className="userInfoLeft">
               <Text className="userName">
                 儒先生<Text className="userPhone">13888888888</Text>
@@ -56,7 +188,61 @@ class Order extends Component {
               <AtIcon value="chevron-right" size="24" color="#fff" />
             </View>
           </View>
+          <View className="dd-padding order">
+            <View className="dd-padding">{this.renderOrderProduct()}</View>
+            <View className="orderBottom">
+              <View style="display:flex;justify-content:space-between">
+                <Text className="feeTip">配送费</Text>
+                <Text>
+                  ¥ <Text className="fee"> {this.state.fee}</Text>
+                </Text>
+              </View>
+              <Text className="totalPrice">
+                ¥ <Text>{totalPrice + this.state.fee}</Text>
+              </Text>
+            </View>
+          </View>
+          <View className="couponWrapper">
+            <View className="couponTopWrapper">
+              <Text className="coupon">优惠券</Text>
+              <Text className="couponColor">
+                -¥<Text className="couponAmount">{this.state.coupon}</Text>
+              </Text>
+            </View>
+            <Text className="couponTip">新人特惠券</Text>
+          </View>
         </View>
+        <AtButton
+          className="shopBtn"
+          loading={this.state.prePayLoading}
+          type="primary"
+          onClick={this.handlePayDisplay.bind(this)}
+        >
+          需支付：¥{totalPrice + this.state.fee - this.state.coupon}
+        </AtButton>
+        <AtFloatLayout
+          isOpened={this.state.openPay}
+          title="请选择支付方式"
+          onClose={this.handleClosePayMethod.bind(this)}
+        >
+          <AtRadio
+            options={[
+              { label: '支付宝', value: 'alipay' },
+              { label: '微信支付', value: 'wechat' },
+              { label: `儒币支付（余额：${account}）`, value: 'rupay' },
+            ]}
+            value={this.state.payMethod}
+            onClick={this.handleChangePayMethod.bind(this)}
+          />
+          <AtButton
+            loading={this.state.payLoading}
+            className="shopBtn"
+            type="primary"
+            onClick={() => this.goToPay()}
+          >
+            立即支付
+          </AtButton>
+        </AtFloatLayout>
       </View>
     );
   }

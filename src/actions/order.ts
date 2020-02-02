@@ -1,5 +1,5 @@
 import { bindActionCreators } from 'redux';
-import { GET_ORDER_LIST,SAVE_ORDER_DATA} from '../constants/list'
+import { GET_ORDER_LIST,SAVE_ORDER_DATA,CREATE_ORDER_LIST} from '../constants/list'
 import store from '../store';
 import { createApiAction, createAction } from './index';
 import api from '../service/api';
@@ -7,11 +7,13 @@ import api from '../service/api';
 // 请求api
 const getorderList = createApiAction(GET_ORDER_LIST, (params) => api.get('order/list',params));
 const saveOrderData = createAction(SAVE_ORDER_DATA)
+const createorderList = createApiAction(CREATE_ORDER_LIST, (params) => api.post('order/create',params));
 
 export default bindActionCreators(
   {
     getorderList,
-    saveOrderData
+    saveOrderData,
+    createorderList
   },
   store.dispatch,
 );
