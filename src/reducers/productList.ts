@@ -5,51 +5,60 @@ import {
   CLEAR_CAR,
 } from './../constants/list';
 import { CHANGE_KEY } from '../constants/list';
+import { Ifood } from 'src/pages/menu/menu';
 
 export interface IproductList {
   name: string;
   type: number;
-  foods: [];
+  spus: Ifood[];
 }
 interface State {
-  productList: IproductList[];
   productCategory: [];
   activeKey: number;
-  shopCarData: {};
+  shopCarData: IproductList[];
+  totalCount: number;
 }
 const INITIAL_STATE: State = {
-  productList: [],
   productCategory: [],
   activeKey: 0,
-  shopCarData: {},
+  totalCount: 0,
+  shopCarData: [],
 };
-const dealWithSelectItem = (state, action, type) => {
-  const listData = state.listData;
+const dealWithSelectItem = (state: State, { id, outIndex }, type) => {
+  const listData = state.shopCarData;
+  const leftIndex = state.activeKey;
+  const productId = id;
+  const list = listData;
+  const currentItem = list[outIndex || leftIndex];
   // 找到外层左边的list列表
-  const list = listData.food_spu_tags || [];
   // 对当前点击的加一 或减一
-  const currentItem = list[action.outIndex || state.currentLeftIndex];
   if (type === ADD_SELECT_ITEM) {
-    currentItem.spus[action.obj.index].chooseCount++;
+    if (currentItem['spus'][productId].chooseCount) {
+      currentItem['spus'][productId].chooseCount++;
+    } else {
+      currentItem['spus'][productId].chooseCount = 1;
+    }
   } else {
-    currentItem.spus[action.obj.index].chooseCount--;
+    currentItem['spus'][productId].chooseCount--;
   }
   const _listData = JSON.parse(JSON.stringify(listData));
   return _listData;
 };
 const addListItem = (state, payload) => ({
   ...state,
-  listData: dealWithSelectItem(state, payload, ADD_SELECT_ITEM),
+  totalCount: ++state.totalCount,
+  shopCarData: dealWithSelectItem(state, payload, ADD_SELECT_ITEM),
 });
 
 const minusListItem = (state, payload) => ({
   ...state,
-  listData: dealWithSelectItem(state, payload, MINUS_SELECT_ITEM),
+  totalCount: --state.totalCount,
+  shopCarData: dealWithSelectItem(state, payload, MINUS_SELECT_ITEM),
 });
 const clearCar = state => {
-  const listData = state.listData;
+  const shopCarData = state.shopCarData;
   // 找到外层，左边list列表
-  const list = listData.food_spu_tags || [];
+  const list = shopCarData || [];
 
   for (let i = 0; i < list.length; i++) {
     const spus = list[i].spus || [];
@@ -57,7 +66,7 @@ const clearCar = state => {
       spus[j].chooseCount = 0;
     }
   }
-  return { ...state, listData: JSON.parse(JSON.stringify(listData)) };
+  return { ...state, shopCarData: JSON.parse(JSON.stringify(shopCarData)) };
 };
 
 export default function product(state = INITIAL_STATE, { type, payload }) {
@@ -66,7 +75,6 @@ export default function product(state = INITIAL_STATE, { type, payload }) {
       return {
         ...state,
         activeKey: payload,
-        productItemList: state.productList[payload].foods,
       };
     }
     case GET_CATEGORY_LIST: {
@@ -75,10 +83,13 @@ export default function product(state = INITIAL_STATE, { type, payload }) {
       const productCategory = productList.map(item => {
         return { title: item.name };
       });
+      const shopCarData = productList.map(item => {
+        return { name: item.name, type: item.type, spus: item.foods };
+      });
       return {
         ...state,
-        productList,
         productCategory,
+        shopCarData,
       };
     }
     case ADD_SELECT_ITEM:

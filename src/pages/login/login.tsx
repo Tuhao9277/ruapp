@@ -47,8 +47,9 @@ class Index extends Taro.Component<K, T> {
     api.post('login', event.detail.value).then(res => {
       if (res.data.code === 0) {
         authAction.login(event.detail.value.openid);
-        this.showMessage(res.data.msg)
+        this.showMessage(res.data.msg);
         lsSave('openid', event.detail.value.openid);
+        authAction.getUserInfo({ openid: event.detail.value.openid });
         Taro.navigateBack();
       }
       this.setState({

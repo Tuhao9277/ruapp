@@ -1,6 +1,6 @@
 import { ComponentClass } from 'react';
 import Taro, { Component, Config } from '@tarojs/taro';
-import { AtTabs, AtTabsPane, AtFab, AtFloatLayout, AtNoticebar, AtBadge, AtCard } from 'taro-ui';
+import { AtTabs, AtTabsPane, AtFab, AtNoticebar, AtBadge, AtCard } from 'taro-ui';
 import { View, Image, Text } from '@tarojs/components';
 import { connect } from '@tarojs/redux';
 import { IproductList } from './../../reducers/productList';
@@ -12,12 +12,15 @@ import shopPackageImg from './../../images/shopPackage.png';
 import { OrderStatus, PayStatus } from './../../const/status';
 import { formattedTime } from '../../utils/index';
 
-interface Ifood {
+export interface Ifood {
   id: string;
   name: string;
   price: number;
   description: string;
   icon: string;
+  chooseCount: number;
+  index?: number;
+  outIndex?: number;
 }
 interface IorderItem {
   orderId: string;
@@ -32,9 +35,10 @@ interface IorderItem {
 
 type PageStateProps = {
   openid: string;
-  productList: [];
+  shopCarData: []
   productCategory: [];
   orderList: [];
+  totalCount: number;
   activeKey: number;
 };
 
@@ -44,7 +48,6 @@ type PageOwnProps = {};
 
 type PageState = {
   current: number;
-  isopenShopBar: boolean;
 };
 
 type IProps = PageStateProps & PageDispatchProps & PageOwnProps;
@@ -55,7 +58,8 @@ interface Menu {
 }
 @connect(({ product, user, order }) => ({
   openid: user.openid,
-  productList: product.productList,
+  shopCarData: product.shopCarData,
+  totalCount: product.totalCount,
   productCategory: product.productCategory,
   activeKey: product.activeKey,
   orderList: order.orderList,
@@ -64,11 +68,14 @@ class Menu extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      current: 2,
-      isopenShopBar: false,
+      current: 0,
     };
-    this.getOrderList();
-    menuAction.getMenuList();
+    if (props.openid) {
+      this.getOrderList();
+    }
+    if(!props.shopCarData.length){
+      menuAction.getMenuList();
+    }
   }
   handleClick(value) {
     menuAction.changeMenuKey(value);
@@ -76,6 +83,11 @@ class Menu extends Component {
   handleTopClick(current) {
     this.setState({
       current,
+    });
+  }
+  handleRouterToShopBar() {
+    Taro.navigateTo({
+      url: '/pages/shopBar/shopBar',
     });
   }
   getOrderList(page = 0, size = 10) {
@@ -86,14 +98,9 @@ class Menu extends Component {
     };
     orderAction.getorderList(params);
   }
-  handleDisplayShopBar() {
-    this.setState((prevState: PageState) => ({
-      isopenShopBar: !prevState.isopenShopBar,
-    }));
-  }
   renderTabsPane() {
-    const { productList, activeKey } = this.props;
-    return productList.map((item: IproductList, index) => {
+    const { shopCarData, activeKey } = this.props;
+    return shopCarData.map((item: IproductList, index) => {
       return (
         <AtTabsPane
           className="tabsMenu"
@@ -103,10 +110,15 @@ class Menu extends Component {
           index={index}
         >
           <View className="listItem">
-            {item.foods.map((food: Ifood) => {
+            {item.spus.map((food: Ifood, idx) => {
+              if (!food.chooseCount) {
+                food.chooseCount = 0;
+              }
               return (
                 <View key={food.id} className="foodItem">
                   <ProductItem
+                    chooseCount={food.chooseCount}
+                    idx={idx}
                     title={food.name}
                     desc={food.description}
                     price={food.price}
@@ -148,9 +160,8 @@ class Menu extends Component {
   };
 
   render() {
-    const { isopenShopBar } = this.state;
     const tabList = [{ title: '菜单' }, { title: '推荐' }, { title: '订单' }];
-    const { productCategory, activeKey, orderList } = this.props;
+    const { productCategory, activeKey, orderList, totalCount } = this.props;
     return (
       <View className="homeMenuWrapper">
         <AtTabs
@@ -183,8 +194,8 @@ class Menu extends Component {
           </AtTabsPane>
         </AtTabs>
         <View className="postShopBar">
-          <AtFab onClick={this.handleDisplayShopBar.bind(this)}>
-            <AtBadge value={6} maxValue={99}>
+          <AtFab onClick={this.handleRouterToShopBar.bind(this)}>
+            <AtBadge value={totalCount} maxValue={99}>
               <Image style="width:35px;height:35px" src={shopPackageImg} mode="aspectFill" />
             </AtBadge>
           </AtFab>
@@ -192,14 +203,6 @@ class Menu extends Component {
         <AtNoticebar className="dd-padding noticeBar" icon="volume-plus">
           点单满80免配送费，再送买一张送一礼券
         </AtNoticebar>
-        <AtFloatLayout
-          isOpened={isopenShopBar}
-          title="这是个标题"
-          onClose={this.handleDisplayShopBar.bind(this)}
-        >
-          这是内容区 随你怎么写这是内容区 随你怎么写这是内容区 随你怎么写这是内容区
-          随你怎么写这是内容区 随你怎么写这是内容区 随你怎么写
-        </AtFloatLayout>
       </View>
     );
   }

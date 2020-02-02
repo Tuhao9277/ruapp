@@ -5,7 +5,7 @@ import './AtHeader.less';
 
 interface K {
   title: string;
-  username: string;
+  username?: string;
 }
 interface T {
   [key: string]: string;
@@ -16,7 +16,7 @@ export default class AtHeader extends Taro.Component<K, T> {
     return (
       <View className="dd-padding AtHeaderWrapper">
         <Text>{title}</Text>
-        <AtAvatar circle text={username && username.charAt(username.length - 1)}></AtAvatar>
+        {username && <AtAvatar circle text={username.charAt(username.length - 1)}></AtAvatar>}
       </View>
     );
   }

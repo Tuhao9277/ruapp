@@ -2,7 +2,7 @@ import { ComponentClass } from 'react';
 import Taro, { Component, Config } from '@tarojs/taro';
 import { connect } from '@tarojs/redux';
 import { View } from '@tarojs/components';
-import { AtList, AtListItem, AtMessage } from 'taro-ui';
+import { AtList, AtListItem, AtMessage, AtButton } from 'taro-ui'
 import './my.less';
 import AtHeader from './../../components/AtHeader';
 import LoginTip from './../../components/LoginTip';
@@ -16,11 +16,14 @@ import userAction from './../../actions/authAction';
 // ref: https://github.com/DefinitelyTyped/DefinitelyTyped/issues/20796
 //
 // #endregion
-
+interface UserInfo {
+  account: string;
+  username: string;
+}
 type PageStateProps = {
   status: boolean;
   openid: string;
-  userInfo: {};
+  userInfo: UserInfo;
 };
 
 type PageOwnProps = {};
@@ -47,15 +50,20 @@ class My extends Component {
    */
   constructor(props) {
     super(props);
-    const { status, openid } = props;
+  }
+  componentDidMount(){
+    this.getUserInfoFun()
+  }
+  handleLogout(){
+    userAction.logout()
+  }
+
+  getUserInfoFun(){
+    const { status, openid } = this.props;
     if (status) {
       userAction.getUserInfo({ openid });
     }
   }
-  componentWillReceiveProps(nextProps) {
-    console.log(this.props, nextProps);
-  }
-
   config: Config = {
     navigationBarTitleText: '我的',
   };
@@ -67,8 +75,8 @@ class My extends Component {
   }
 
   render() {
-    const { status,userInfo } = this.props;
-    const {username，account} = userInfo
+    const { status, userInfo } = this.props;
+    const { username, account } = userInfo;
     return (
       <View>
         <AtMessage />
@@ -77,7 +85,7 @@ class My extends Component {
           <AtListItem
             title="我的余额"
             thumb="http://img12.360buyimg.com/jdphoto/s72x72_jfs/t10660/330/203667368/1672/801735d7/59c85643N31e68303.png"
-            extraText={`${account}元`}
+            extraText={`${Number(account).toFixed(2)}元`}
           />
           <AtListItem
             title="星享好礼"
@@ -98,7 +106,7 @@ class My extends Component {
             thumb="http://img12.360buyimg.com/jdphoto/s72x72_jfs/t10660/330/203667368/1672/801735d7/59c85643N31e68303.png"
           />
         </AtList>
-        {!status && <LoginTip />}
+        {!status ? <LoginTip />:<AtButton size="small" className="logoutBtn" onClick={this.handleLogout.bind(this)} type="primary" >登出</AtButton>}
       </View>
     );
   }

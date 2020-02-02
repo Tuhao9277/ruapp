@@ -8,12 +8,13 @@ import productAction from '../actions/product';
 interface K {}
 type PageStateProps = {
   product: [];
-  chooseCount: number;
 };
 
 type PageDispatchProps = {};
 
 type PageOwnProps = {
+  chooseCount: number;
+  idx: number;
   productId: string;
   title: string;
   desc?: string;
@@ -33,7 +34,6 @@ interface ProductItem {
 }
 @connect(({ product }) => ({
   product: product.shopCarData,
-  chooseCount: 0,
 }))
 class ProductItem extends Taro.Component {
   navigateToItem(id: string) {
@@ -42,13 +42,13 @@ class ProductItem extends Taro.Component {
     });
   }
   addSelectItem(id) {
-    productAction.addSelectItem(id);
+    productAction.addSelectItem({ id });
   }
   minusSelectItem(id) {
-    productAction.minusSelectItem(id);
+    productAction.minusSelectItem({ id });
   }
   render() {
-    const { title, price, imageUrl, productId, desc, chooseCount } = this.props;
+    const { title, price, imageUrl, productId, idx, desc, chooseCount } = this.props;
     return (
       <View className="productItemWrapper">
         <Image
@@ -67,7 +67,7 @@ class ProductItem extends Taro.Component {
             {chooseCount > 0 && (
               <View
                 onClick={() => {
-                  this.minusSelectItem(productId);
+                  this.minusSelectItem(idx);
                 }}
                 className="minus"
               ></View>
@@ -75,13 +75,12 @@ class ProductItem extends Taro.Component {
             {chooseCount > 0 && <View className="count">{chooseCount}</View>}
             <View
               onClick={() => {
-                this.addSelectItem(productId);
+                this.addSelectItem(idx);
               }}
               className="plus"
             ></View>
           </View>
         </View>
-
       </View>
     );
   }

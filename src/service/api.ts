@@ -20,13 +20,19 @@ export default {
           return logError('api', '请求资源不存在');
         } else if (res.statusCode === HTTP_STATUS.SERVER_ERROR) {
           Taro.showToast({
-            title: res.data.message,
-            icon: 'none',
+            title: res.data.msg,
+            icon:"none"
           });
           return logError('api', '服务端出现了问题');
         } else if (res.statusCode === HTTP_STATUS.FORBIDDEN) {
           return logError('api', '没有权限访问');
         } else if (res.statusCode === HTTP_STATUS.SUCCESS) {
+          if(res.data.code === 500){
+            Taro.showToast({
+              title: res.data.msg,
+              icon:"none"
+            });
+          }
           return res.data;
         }
       },

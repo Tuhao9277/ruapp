@@ -6,4 +6,5 @@ export const ADD_SELECT_ITEM = "ADD_SELECT_ITEM"
 export const MINUS_SELECT_ITEM = "MINUS_SELECT_ITEM"
 export const CLEAR_CAR = "CLEAR_CAR"
 export const GET_ORDER_LIST = "GET_ORDER_LIST"
+export const SAVE_ORDER_DATA = "SAVE_ORDER_DATA"
 

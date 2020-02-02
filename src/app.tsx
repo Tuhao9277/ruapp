@@ -39,6 +39,8 @@ class App extends Component {
       'pages/register/register',
       'pages/productDisplay/productDisplay',
       'pages/menu/menu',
+      'pages/shopBar/shopBar',
+      'pages/order/order',
     ],
     window: {
       backgroundTextStyle: 'light',
