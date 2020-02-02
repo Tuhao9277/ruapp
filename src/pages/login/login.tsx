@@ -9,6 +9,7 @@ import taobao from './../../images/taobao.png';
 import authAction from './../../actions/authAction';
 import { lsSave } from './../../utils';
 import api from './../../service/api';
+import ANavBar from './../../components/ANavBar'
 
 interface K {}
 interface T {
@@ -74,13 +75,14 @@ class Index extends Taro.Component<K, T> {
     return (
       <View>
         <AtMessage />
+        <ANavBar />
         <AtHeader title="欢迎来到星享俱乐部" />
         <AtForm className="dd-padding loginForm" onSubmit={this.onSubmit.bind(this)}>
           <AtInput
             name="openid"
-            title="用户名"
+            title="用户ID"
             type="text"
-            placeholder="请输入用户名"
+            placeholder="请输入用户ID"
             value={openid}
             onChange={this.handleChangeOpenid.bind(this)}
           />

@@ -35,7 +35,7 @@ interface IorderItem {
 
 type PageStateProps = {
   openid: string;
-  shopCarData: []
+  shopCarData: [];
   productCategory: [];
   orderList: [];
   totalCount: number;
@@ -73,7 +73,7 @@ class Menu extends Component {
     if (props.openid) {
       this.getOrderList();
     }
-    if(!props.shopCarData.length){
+    if (!props.shopCarData.length) {
       menuAction.getMenuList();
     }
   }
@@ -88,6 +88,11 @@ class Menu extends Component {
   handleRouterToShopBar() {
     Taro.navigateTo({
       url: '/pages/shopBar/shopBar',
+    });
+  }
+  handleRouterToOrderDetail(orderId: string) {
+    Taro.navigateTo({
+      url: `/pages/orderSuc/orderSuc?orderId=${orderId}`,
     });
   }
   getOrderList(page = 0, size = 10) {
@@ -139,6 +144,7 @@ class Menu extends Component {
       const { createTime, orderAmount, orderStatus, payStatus } = item;
       return (
         <AtCard
+          onClick={() => this.handleRouterToOrderDetail(item.orderId)}
           key={item.orderId}
           className="orderItemWrapper"
           note={formattedTime(createTime)}
@@ -190,7 +196,7 @@ class Menu extends Component {
           </AtTabsPane>
           <AtTabsPane current={this.state.current} index={2}>
             <View className="dd-padding orderListWrapper">
-              {!orderList.length ? <Text>当前没有订单，快去下单吧</Text> : this.renderOrderList()}
+              {!orderList.length ? <Text className="emptyOrderTip">当前没有订单，快去下单吧</Text> : this.renderOrderList()}
             </View>
           </AtTabsPane>
         </AtTabs>

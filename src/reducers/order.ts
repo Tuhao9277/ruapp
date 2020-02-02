@@ -1,8 +1,43 @@
-import { GET_ORDER_LIST, SAVE_ORDER_DATA } from '../constants/list';
+import { GET_ORDER_LIST, SAVE_ORDER_DATA, ORDER_DETAIL } from '../constants/list';
 
-const INITIAL_STATE = {
+export interface DetailList {
+  detailId: string;
+  orderId: string;
+  productId: string;
+  productName: string;
+  productPrice: number;
+  productQuantity: number;
+  productIcon: string;
+}
+export interface OrderDetail {
+  orderId: string;
+  buyerName: string;
+  orderPhone: string;
+  buyerAddress: string;
+  orderAmount: number;
+  orderStatus: number;
+  payStatus: number;
+  buyerOpenid: string;
+  orderDetailList: DetailList[];
+}
+interface State {
+  orderList: [];
+  currentOrder: {};
+  currentOrderDetail: OrderDetail;
+}
+const INITIAL_STATE: State = {
   orderList: [],
-  currentOrder: {
+  currentOrder: {},
+  currentOrderDetail: {
+    orderId: '',
+    buyerName: '',
+    orderPhone: '',
+    buyerAddress: '',
+    orderAmount: 0,
+    orderStatus: 0,
+    payStatus: 0,
+    buyerOpenid: '',
+    orderDetailList: [],
   },
 };
 
@@ -12,6 +47,13 @@ export default function order(state = INITIAL_STATE, { type, payload }) {
       return {
         ...state,
         currentOrder: payload,
+      };
+    }
+    case ORDER_DETAIL: {
+      const { data } = payload.data;
+      return {
+        ...state,
+        currentOrderDetail: data,
       };
     }
     case GET_ORDER_LIST: {
