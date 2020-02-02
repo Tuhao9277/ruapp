@@ -184,7 +184,7 @@ class Index extends Component {
               <View className="detailTopRightWrapper">
                 <Text className="payStatusWrapper">{PayStatus[payStatus]}</Text>
                 <Text className="orderStatusWrapper">{OrderStatus[orderStatus]}</Text>
-                {orderStatus === 1 ? (
+                {orderStatus === 0 ? (
                   <View className="recallBtn">
                     <AtButton
                       onClick={() => this.showCancelOrderModal()}
