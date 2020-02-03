@@ -2,7 +2,7 @@ import { ComponentClass } from 'react';
 import Taro, { Component, Config } from '@tarojs/taro';
 import { connect } from '@tarojs/redux';
 import { View } from '@tarojs/components';
-import { AtList, AtListItem, AtMessage, AtButton } from 'taro-ui'
+import { AtList, AtListItem, AtMessage, AtButton } from 'taro-ui';
 import './my.less';
 import AtHeader from './../../components/AtHeader';
 import LoginTip from './../../components/LoginTip';
@@ -51,14 +51,14 @@ class My extends Component {
   constructor(props) {
     super(props);
   }
-  componentDidMount(){
-    this.getUserInfoFun()
+  componentDidMount() {
+    this.getUserInfoFun();
   }
-  handleLogout(){
-    userAction.logout()
+  handleLogout() {
+    userAction.logout();
   }
 
-  getUserInfoFun(){
+  getUserInfoFun() {
     const { status, openid } = this.props;
     if (status) {
       userAction.getUserInfo({ openid });
@@ -73,6 +73,11 @@ class My extends Component {
       type: 'info',
     });
   }
+  hendleToAddr() {
+    Taro.navigateTo({
+      url: '/pages/address/address',
+    });
+  }
 
   render() {
     const { status, userInfo } = this.props;
@@ -85,18 +90,24 @@ class My extends Component {
           <AtListItem
             title="我的余额"
             thumb="http://img12.360buyimg.com/jdphoto/s72x72_jfs/t10660/330/203667368/1672/801735d7/59c85643N31e68303.png"
-            extraText={`${Number(account).toFixed(2)}元`}
+            extraText={`${Number(account).toFixed(2)}儒币`}
           />
+            {status && (
+              <AtListItem
+                title="收货地址"
+                thumb="http://img10.360buyimg.com/jdphoto/s72x72_jfs/t5872/209/5240187906/2872/8fa98cd/595c3b2aN4155b931.png"
+                extraText="管理收货地址"
+                onClick={() => this.hendleToAddr()}
+              />
+            )}
           <AtListItem
+            onClick={this.showMessage.bind(this)}
             title="星享好礼"
             thumb="https://img12.360buyimg.com/jdphoto/s72x72_jfs/t6160/14/2008729947/2754/7d512a86/595c3aeeNa89ddf71.png"
             extraText="共0张"
           />
           <AtListItem
-            title="追星站"
-            thumb="http://img10.360buyimg.com/jdphoto/s72x72_jfs/t5872/209/5240187906/2872/8fa98cd/595c3b2aN4155b931.png"
-          />
-          <AtListItem
+            onClick={this.showMessage.bind(this)}
             title="设置"
             thumb="http://img12.360buyimg.com/jdphoto/s72x72_jfs/t10660/330/203667368/1672/801735d7/59c85643N31e68303.png"
           />
@@ -106,7 +117,18 @@ class My extends Component {
             thumb="http://img12.360buyimg.com/jdphoto/s72x72_jfs/t10660/330/203667368/1672/801735d7/59c85643N31e68303.png"
           />
         </AtList>
-        {!status ? <LoginTip />:<AtButton size="small" className="logoutBtn" onClick={this.handleLogout.bind(this)} type="primary" >登出</AtButton>}
+        {!status ? (
+          <LoginTip />
+        ) : (
+          <AtButton
+            size="small"
+            className="logoutBtn"
+            onClick={this.handleLogout.bind(this)}
+            type="primary"
+          >
+            登出
+          </AtButton>
+        )}
       </View>
     );
   }

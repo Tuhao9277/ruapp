@@ -42,6 +42,7 @@ class App extends Component {
       'pages/shopBar/shopBar',
       'pages/order/order',
       'pages/orderSuc/orderSuc',
+      'pages/address/address',
     ],
     window: {
       backgroundTextStyle: 'light',

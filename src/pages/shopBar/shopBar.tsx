@@ -105,7 +105,7 @@ class ShopBar extends Component {
         />
         <Text className="dd-padding">购物车({data.dotNum})</Text>
         <AtNoticebar className="dd-padding shopBarNotice" icon="volume-plus">
-          点单满80免配送费，再送买一张送一礼券
+          点单满80免配送费，再送买一送一礼券
         </AtNoticebar>
         <View className="dd-padding shopProductWrapper">
           {this.renderTabsPane(data.chooseList)}

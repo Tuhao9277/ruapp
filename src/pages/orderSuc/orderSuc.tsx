@@ -1,7 +1,7 @@
 import { ComponentClass } from 'react';
 import Taro, { Component } from '@tarojs/taro';
 import { connect } from '@tarojs/redux';
-import { AtNavBar, AtButton, AtModal, AtFloatLayout, AtRadio } from 'taro-ui';
+import { AtNavBar, AtButton, AtModal, AtFloatLayout, AtRadio, AtIcon } from 'taro-ui';
 import { View, Text, Image } from '@tarojs/components';
 import './orderSuc.less';
 import orderAction from './../../actions/order';
@@ -10,6 +10,7 @@ import { OrderDetail } from './../../reducers/order';
 import courierImg from './../../images/courier.png';
 import api from './../../service/api';
 import userAction from './../../actions/authAction';
+import { formattedTime } from '../../utils/index'
 
 type PageStateProps = {
   openid: string;
@@ -152,7 +153,7 @@ class Index extends Component {
           duration: 1000,
         }).then(() => {
           setTimeout(() => {
-           Taro.navigateBack()
+            Taro.navigateBack();
           }, 1000);
         });
       }
@@ -168,23 +169,23 @@ class Index extends Component {
       orderStatus,
       payStatus,
       orderDetailList,
+      createTime,
     } = currentOrder;
     return (
-      <View className="dd-padding Index">
+      <View className="dd-padding orderResultWrapper">
         <AtNavBar
           onClickLeftIcon={this.hanldeRouterBack.bind(this)}
           color="#000"
           leftIconType="chevron-left"
         />
         <View>
-          {/* <Text>订单号：{orderId}</Text> */}
           <View>
             <View className="detailTopWrapper">
               <Image src={courierImg} className="detailTopImg" mode="scaleToFill" />
               <View className="detailTopRightWrapper">
                 <Text className="payStatusWrapper">{PayStatus[payStatus]}</Text>
                 <Text className="orderStatusWrapper">{OrderStatus[orderStatus]}</Text>
-                {orderStatus === 0 &&
+                {payStatus === 1 && orderStatus === 0 && (
                   <View className="recallBtn">
                     <AtButton
                       onClick={() => this.showCancelOrderModal()}
@@ -195,8 +196,8 @@ class Index extends Component {
                       申请退款
                     </AtButton>
                   </View>
-                }{
-                  orderStatus === 1 && (
+                )}
+                {payStatus === 0 && orderStatus === 0 && (
                   <View className="recallBtn">
                     <AtButton
                       onClick={() => this.handleClosePayMethod()}
@@ -221,6 +222,18 @@ class Index extends Component {
           onCancel={this.handleCancel.bind(this)}
           onConfirm={() => this.handleCancelOrder(orderId)}
         />
+        <View className="orderResultUserInfoWrapper">
+          <View className="userInfoLeft">
+            <Text className="userName">
+              {buyerName}
+              {/* <Text className="userPhone">13888888888</Text> */}
+            </Text>
+            <View className="userAddr">
+              <AtIcon value="map-pin" size="18"  />
+              <Text className="userAddrText">{buyerAddress}</Text>
+            </View>
+          </View>
+        </View>
 
         <View className="dd-padding detailContentWrapper">
           {this.renderDetailList(orderDetailList)}
@@ -248,6 +261,17 @@ class Index extends Component {
             <Text>
               实付：¥ <Text className="realPriceHighLight">{orderAmount}</Text>
             </Text>
+          </View>
+        </View>
+        <View className="orderResultUserInfoWrapper">
+          <View className="userInfoLeft">
+            <Text className="userName">
+              订单信息
+            </Text>
+            <View className="userOrderInfoWrapper">
+                <Text className="orderIdWrapper"><View>订单号：</View> <View>{orderId}</View></Text>
+              <Text className="orderIdWrapper"><View>下单时间：</View><View>{formattedTime(createTime)}</View></Text>
+            </View>
           </View>
         </View>
         <AtFloatLayout

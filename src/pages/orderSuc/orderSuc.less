@@ -5,6 +5,11 @@
   margin-bottom: 20px;
   border-radius: 5px;
 }
+.orderIdWrapper{
+  margin-bottom: 10px;
+  display: flex;
+  justify-content: space-between;
+}
 .foodOrderImg {
   width: 120px;
   height: 120px;
@@ -51,7 +56,7 @@
 .detailContentWrapper {
   display: flex;
   flex-direction: column;
-  min-height: 55vh;
+  min-height: 45vh;
   font-size: 30px;
   padding: 40px 20px;
   border-radius: 10px;
@@ -144,4 +149,30 @@
 .couponColor{
   color: #279e68;
 
+}
+.orderResultUserInfoWrapper{
+  margin-bottom: 20px;
+  box-shadow: 0px 4px 18px 0px rgba(0, 0, 0, 0.1);
+  border-radius: 10px;
+  padding: 20px;
+  height: 150px;
+  display: flex;
+  .userInfoLeft{
+    flex: 1;
+    .userName{
+      font-size: 34px;
+    }
+    .userPhone{
+      padding-left: 10px;
+      font-size: 24px;
+    }
+    .userAddr{
+      display: block;
+      font-size: 20px;
+    }
+  }
+}
+.userOrderInfoWrapper{
+  color: #999;
+  font-size: 24px;
 }
