@@ -2,9 +2,11 @@ import { ComponentClass } from 'react';
 import Taro, { Component, Config } from '@tarojs/taro';
 import { ScrollView, View, Image, Text, Swiper, SwiperItem } from '@tarojs/components';
 import { connect } from '@tarojs/redux';
+import menuAction from '../../actions/product';
+
 import banner1 from './../../images/offers@2x.png';
 import HomeMenu from './HomeMenu';
-import  './index.less';
+import './index.less';
 // #region 书写注意
 //
 // 目前 typescript 版本还无法在装饰器模式下将 Props 注入到 Taro.Component 中的 props 属性
@@ -21,6 +23,7 @@ interface OrderMenuK {
 type PageStateProps = {
   orderMenu: [];
   exploreMenu: [];
+  gussusLike: [];
 };
 
 type PageOwnProps = {};
@@ -33,9 +36,10 @@ interface Index {
   props: IProps;
 }
 
-@connect(({ orderTab }) => ({
+@connect(({ orderTab, product }) => ({
   orderMenu: orderTab.orderMenu,
   exploreMenu: orderTab.exploreMenu,
+  gussusLike: product.shopCarData,
 }))
 class Index extends Component {
   /**
@@ -45,6 +49,12 @@ class Index extends Component {
    * 对于像 navigationBarTextStyle: 'black' 这样的推导出的类型是 string
    * 提示和声明 navigationBarTextStyle: 'black' | 'white' 类型冲突, 需要显示声明类型
    */
+  constructor(props) {
+    super(props);
+    if (!props.gussusLike.length) {
+      menuAction.getMenuList();
+    }
+  }
 
   componentWillReceiveProps(nextProps) {
     console.log(this.props, nextProps);
@@ -135,9 +145,8 @@ class Index extends Component {
           <View className="exploreTabs">{this.renderExploreTab()}</View>
         </View>
         <View className="homeMenu">
-          <HomeMenu />
+          <HomeMenu gussusLike={this.props.gussusLike} />
         </View>
-
       </View>
     );
   }

@@ -5,7 +5,7 @@ import {
   CLEAR_CAR,
 } from './../constants/list';
 import { CHANGE_KEY } from '../constants/list';
-import { Ifood } from 'src/pages/menu/menu';
+import { Ifood } from './../pages/menu/menu';
 
 export interface IproductList {
   name: string;
@@ -17,12 +17,14 @@ interface State {
   activeKey: number;
   shopCarData: IproductList[];
   totalCount: number;
+  gussusLike: [];
 }
 const INITIAL_STATE: State = {
   productCategory: [],
   activeKey: 0,
   totalCount: 0,
   shopCarData: [],
+  gussusLike: [],
 };
 const dealWithSelectItem = (state: State, { id, outIndex }, type) => {
   const listData = state.shopCarData;
@@ -90,6 +92,7 @@ export default function product(state = INITIAL_STATE, { type, payload }) {
         ...state,
         productCategory,
         shopCarData,
+        gussusLike: shopCarData[0].spus,
       };
     }
     case ADD_SELECT_ITEM:

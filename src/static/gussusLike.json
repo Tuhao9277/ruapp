@@ -7,7 +7,8 @@
     "url": "/menu/beverages/espresso/cappuccino/",
     "popular": "",
     "price": 29,
-    "productId": 0
+    "productId": 0,
+    "chooseCount":0
   },
   "/menu/beverages/espresso/caramel-macchiato": {
     "title": "焦糖玛奇朵（热/冷）",
@@ -17,7 +18,8 @@
     "url": "/menu/beverages/espresso/caramel-macchiato/",
     "popular": "true",
     "price": 29,
-    "productId": 1
+    "productId": 1,
+    "chooseCount":0
   },
   "/menu/beverages/teavana/honey-ruby-grapefruit-tea": {
     "title": "茶瓦纳™ 冰摇柚柚蜂蜜红茶",
@@ -27,7 +29,8 @@
     "url": "/menu/beverages/teavana/honey-ruby-grapefruit-tea/",
     "popular": "",
     "price": 29,
-    "productId": 2
+    "productId": 2,
+    "chooseCount":0
   },
   "/menu/coffee/whole-bean/medium-roast/starbucks-breakfast-blend": {
     "title": "星巴克®早餐综合咖啡豆",
@@ -37,7 +40,8 @@
     "url": "/menu/coffee/whole-bean/medium-roast/starbucks-breakfast-blend/",
     "popular": "true",
     "price": 29,
-    "productId": 3
+    "productId": 3,
+    "chooseCount":0
   },
   "/menu/coffee/whole-bean/dark-roast/starbucks-caffe-verona": {
     "title": "星巴克®佛罗娜咖啡豆",
@@ -47,7 +51,8 @@
     "url": "/menu/coffee/whole-bean/dark-roast/starbucks-caffe-verona/",
     "popular": "",
     "price": 29,
-    "productId": 4
+    "productId": 4,
+    "chooseCount":0
   },
   "/menu/coffee/whole-bean/medium-roast/starbucks-colombia": {
     "title": "星巴克®哥伦比亚咖啡豆",
@@ -57,7 +62,8 @@
     "url": "/menu/coffee/whole-bean/medium-roast/starbucks-colombia/",
     "popular": "",
     "price": 29,
-    "productId": 5
+    "productId": 5,
+    "chooseCount":0
   },
   "/menu/coffee/whole-bean/dark-roast/starbucks-espresso-roast": {
     "title": "星巴克®浓缩烘焙咖啡豆",
@@ -67,7 +73,8 @@
     "url": "/menu/coffee/whole-bean/dark-roast/starbucks-espresso-roast/",
     "popular": "",
     "price": 29,
-    "productId": 6
+    "productId": 6,
+    "chooseCount":0
   },
   "/menu/coffee/whole-bean/medium-roast/starbucks-ethiopia": {
     "title": "星巴克®埃塞俄比亚咖啡豆",
@@ -77,7 +84,8 @@
     "url": "/menu/coffee/whole-bean/medium-roast/starbucks-ethiopia/",
     "popular": "",
     "price": 29,
-    "productId": 7
+    "productId": 7,
+    "chooseCount":0
   },
   "/menu/coffee/whole-bean/dark-roast/starbucks-fairtrade-certified-italian-roast": {
     "title": "星巴克®意式烘焙咖啡豆",
@@ -87,7 +95,8 @@
     "url": "/menu/coffee/whole-bean/dark-roast/starbucks-fairtrade-certified-italian-roast/",
     "popular": "",
     "price": 29,
-    "productId": 8
+    "productId": 8,
+    "chooseCount":0
   },
   "/menu/coffee/whole-bean/medium-roast/starbucks-guatemala-antigua": {
     "title": "星巴克®危地马拉安提瓜咖啡豆",
@@ -97,7 +106,8 @@
     "url": "/menu/coffee/whole-bean/medium-roast/starbucks-guatemala-antigua/",
     "popular": "",
     "price": 29,
-    "productId": 9
+    "productId": 9,
+    "chooseCount":0
   },
   "/menu/coffee/whole-bean/medium-roast/starbucks-house-blend": {
     "title": "星巴克®首选咖啡豆",
@@ -107,6 +117,7 @@
     "url": "/menu/coffee/whole-bean/medium-roast/starbucks-house-blend/",
     "popular": "true",
     "price": 29,
-    "productId": 10
+    "productId": 10,
+    "chooseCount":0
   }
 }

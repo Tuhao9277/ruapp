@@ -11,6 +11,7 @@ export default {
     const option = {
       isShowLoading: true,
       loadingText: '正在加载',
+      credentials:'include',
       url: configuration.API_SVC + url,
       data,
       method,

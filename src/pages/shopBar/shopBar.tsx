@@ -10,6 +10,7 @@ import ProductItem from './../../components/ProductItem';
 import orderAction from './../../actions/order';
 
 type PageStateProps = {
+  status: boolean;
   shopCarData: IproductList[];
 };
 type PageDispatchProps = {};
@@ -24,7 +25,8 @@ interface ShopBar {
   props: IProps;
   state: PageState;
 }
-@connect(({ product }) => ({
+@connect(({ user, product }) => ({
+  status: user.status,
   shopCarData: product.shopCarData,
 }))
 class ShopBar extends Component {
@@ -76,6 +78,12 @@ class ShopBar extends Component {
     });
   }
   handleRouterTo(data: {}) {
+    if (!this.props.status) {
+      Taro.navigateTo({
+        url: `/pages/login/login`,
+      });
+      return
+    }
     orderAction.saveOrderData(data);
     Taro.navigateTo({
       url: `/pages/order/order`,
@@ -99,7 +107,9 @@ class ShopBar extends Component {
         <AtNoticebar className="dd-padding shopBarNotice" icon="volume-plus">
           点单满80免配送费，再送买一张送一礼券
         </AtNoticebar>
-        <View className="dd-padding shopProductWrapper">{this.renderTabsPane(data.chooseList)}</View>
+        <View className="dd-padding shopProductWrapper">
+          {this.renderTabsPane(data.chooseList)}
+        </View>
         {!!data.dotNum && (
           <AtButton className="shopBtn" type="primary" onClick={() => this.handleRouterTo(data)}>
             结算：¥{data.totalPrice}

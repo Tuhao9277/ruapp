@@ -143,7 +143,7 @@ export function lsReadArr(key: string) {
   }
 }
 export function formattedTime(time: number) {
-  return moment(time * 1000).format('YYYY-MM-DD HH:mm:ss');
+  return moment(time).format('YYYY-MM-DD HH:mm:ss');
 }
 export function formatterTime(time: number) {
   return moment(time).format('HH:mm:ss');

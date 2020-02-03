@@ -58,7 +58,9 @@ class Pay extends Component {
   render () {
     return (
       <View className='Pay'>
-        <View><Text>Hello, Pay</Text></View>
+        <View><Text>
+          暂未开发。敬请期待
+          </Text></View>
       </View>
     )
   }
