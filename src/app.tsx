@@ -43,6 +43,9 @@ class App extends Component {
       'pages/order/order',
       'pages/orderSuc/orderSuc',
       'pages/address/address',
+      'pages/address/addressForm',
+      'pages/address/addressUpdateForm',
+      'pages/address/addressIndexes',
     ],
     window: {
       backgroundTextStyle: 'light',

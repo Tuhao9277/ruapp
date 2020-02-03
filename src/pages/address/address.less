@@ -1,0 +1,50 @@
+.addressItemWrapper{
+  padding: 10px 20px;
+  display: flex;
+  justify-content: space-between;
+  position: relative;
+  &::after{
+    content: "";
+    position: absolute;
+    transform-origin: center;
+    pointer-events: none;
+    top: -50%;
+    left: -50%;
+    right: -50%;
+    bottom: -50%;
+    border: 0 solid #dad7d7;
+    transform: scale(0.5);
+    border-bottom-width: 1PX;
+  }
+  .addressItemLeftWrapper{
+    flex: 1;
+    .addressItemTopWrapper{
+      display: flex;
+      font-size: 30px;
+      .addressName{
+        margin-right: 30px;
+      }
+      .addressTel{
+      }
+    }
+    .addressWrapper{
+        font-size: 28px;
+        color: #999;
+    }
+  }
+  .at-icon {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+}
+.AddressForm{
+  padding: 0 20px;
+}
+.AddressFormTitle{
+  display: block;
+  margin-top: 20px;
+}
+.recDelAddr{
+  margin-top: 20px;
+}

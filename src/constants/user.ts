@@ -2,3 +2,6 @@ export const SAVE_OPENID = 'SAVE_OPENID'
 export const REGISTER = 'REGISTER'
 export const SAVE_USER_INFO = 'SAVE_USER_INFO'
 export const LOGOUT = 'LOGOUT'
+export const GET_USER_ADDRESS = 'GET_USER_ADDRESS'
+export const CHANGE_CURRENT_ADDR = 'CHANGE_CURRENT_ADDR'
+

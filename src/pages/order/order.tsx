@@ -20,11 +20,21 @@ interface OrderListItem {
   icon: string;
   chooseCount: number;
 }
+interface Adderess {
+  recId: string;
+  buyerId: string;
+  recName: string;
+  recTelephone: string;
+  recAddress: string;
+}
 type PageOwnProps = {
   currentOrder: {};
   chooseList: OrderListItem[];
   account: number;
   openid: string;
+  addressList: [];
+  currentAddress: Adderess;
+  buyerId: string;
 };
 
 type PageState = {
@@ -48,14 +58,17 @@ interface Order {
   currentOrder: order.currentOrder,
   chooseList: order.currentOrder.chooseList,
   account: user.userInfo.account,
+  addressList: user.userInfo.addressList,
+  currentAddress: user.currentAddress,
+  buyerId: user.buyerId,
   openid: user.openid,
 }))
 class Order extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      fee: 12,
-      coupon: 10,
+      fee: 0,
+      coupon: 0,
       openPay: false,
       payMethod: 'rupay',
       payLoading: false,
@@ -63,6 +76,7 @@ class Order extends Component {
       prePayLoading: false,
     };
     userAction.getUserInfo({ openid: props.openid });
+    userAction.getUserAddress({ buyerId: props.buyerId });
   }
   renderOrderProduct() {
     const { chooseList } = this.props.currentOrder;
@@ -91,7 +105,6 @@ class Order extends Component {
   }
   goToPay() {
     const { orderId } = this.state;
-    console.log(orderId)
     const { openid } = this.props;
     this.setState({
       payLoading: true,
@@ -131,27 +144,25 @@ class Order extends Component {
   }
   handlePayDisplay() {
     this.setState({
-      prePayLoading:true
-    })
-    const { openid, chooseList } = this.props;
+      prePayLoading: true,
+    });
+    const { openid, chooseList, currentAddress } = this.props;
     const items = chooseList.map(item => ({
       productId: item.id,
       productQuantity: item.chooseCount,
     }));
     const params = {
-      name: '儒先生',
-      phone: '18868822111',
-      address: '望京街道，望京西园三区3单元1001室',
+      recId: currentAddress.recId,
       openid,
       items,
     };
     api.post('order/create', params).then(res => {
       this.setState({
-        prePayLoading:false
-      })
+        prePayLoading: false,
+      });
       if (res.data.code === 0) {
         this.setState((prevState: PageState) => ({
-          orderId:res.data.data.orderId,
+          orderId: res.data.data.orderId,
           openPay: !prevState.openPay,
         }));
       }
@@ -163,8 +174,13 @@ class Order extends Component {
       url: `/pages/orderSuc/orderSuc?orderId=${orderId}`,
     });
   }
+  handleToUpdateAddr(){
+    Taro.navigateTo({
+      url:'/pages/address/addressUpdateForm'
+    })
+  }
   render() {
-    const { currentOrder, account } = this.props;
+    const { currentOrder, account, currentAddress } = this.props;
     const { totalPrice } = currentOrder;
     return (
       <View>
@@ -174,14 +190,15 @@ class Order extends Component {
           <View>
             <Text className="lastTime">约{formatterTime(Date.now() + 30 * 60 * 1000)}后送达</Text>
           </View>
-          <View className="orderUserInfoWrapper">
+          <View className="orderUserInfoWrapper" onClick={this.handleToUpdateAddr.bind(this)}>
             <View className="userInfoLeft">
               <Text className="userName">
-                儒先生<Text className="userPhone">13888888888</Text>
+                {currentAddress.recName}
+                <Text className="userPhone">{currentAddress.recTelephone}</Text>
               </Text>
               <View className="userAddr">
                 <AtIcon value="map-pin" size="18" color="#fff" />
-                <Text className="userAddrText">望京街道，望京西园三区3单元1001室</Text>
+                <Text className="userAddrText">{currentAddress.recAddress}</Text>
               </View>
             </View>
             <View className="userInfoRight">
