@@ -58,17 +58,8 @@ const minusListItem = (state, payload) => ({
   shopCarData: dealWithSelectItem(state, payload, MINUS_SELECT_ITEM),
 });
 const clearCar = state => {
-  const shopCarData = state.shopCarData;
-  // 找到外层，左边list列表
-  const list = shopCarData || [];
-
-  for (let i = 0; i < list.length; i++) {
-    const spus = list[i].spus || [];
-    for (let j = 0; j < spus.length; j++) {
-      spus[j].chooseCount = 0;
-    }
-  }
-  return { ...state, shopCarData: JSON.parse(JSON.stringify(shopCarData)) };
+  const shopCarData = []
+  return { ...state, shopCarData};
 };
 
 export default function product(state = INITIAL_STATE, { type, payload }) {

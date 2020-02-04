@@ -10,7 +10,9 @@ import { OrderDetail } from './../../reducers/order';
 import courierImg from './../../images/courier.png';
 import api from './../../service/api';
 import userAction from './../../actions/authAction';
-import { formattedTime } from '../../utils/index'
+import productAction from './../../actions/product';
+
+import { formattedTime } from '../../utils/index';
 
 type PageStateProps = {
   openid: string;
@@ -147,6 +149,7 @@ class Index extends Component {
         payLoading: false,
       });
       if (res.data.code === 0) {
+        productAction.clearCar({});
         Taro.showToast({
           title: '支付成功',
           icon: 'success',
@@ -237,7 +240,7 @@ class Index extends Component {
               {/* <Text className="userPhone">13888888888</Text> */}
             </Text>
             <View className="userAddr">
-              <AtIcon value="map-pin" size="18"  />
+              <AtIcon value="map-pin" size="18" />
               <Text className="userAddrText">{buyerAddress}</Text>
             </View>
           </View>
@@ -273,12 +276,15 @@ class Index extends Component {
         </View>
         <View className="orderResultUserInfoWrapper">
           <View className="userInfoLeft">
-            <Text className="userName">
-              订单信息
-            </Text>
+            <Text className="userName">订单信息</Text>
             <View className="userOrderInfoWrapper">
-                <Text className="orderIdWrapper"><View>订单号：</View> <View>{orderId}</View></Text>
-              <Text className="orderIdWrapper"><View>下单时间：</View><View>{formattedTime(createTime)}</View></Text>
+              <Text className="orderIdWrapper">
+                <View>订单号：</View> <View>{orderId}</View>
+              </Text>
+              <Text className="orderIdWrapper">
+                <View>下单时间：</View>
+                <View>{formattedTime(createTime)}</View>
+              </Text>
             </View>
           </View>
         </View>
