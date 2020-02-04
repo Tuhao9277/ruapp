@@ -19,6 +19,7 @@ export interface OrderDetail {
   payStatus: number;
   buyerOpenid: string;
   orderDetailList: DetailList[];
+  createTime: string;
 }
 interface State {
   orderList: [];

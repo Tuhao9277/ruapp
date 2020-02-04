@@ -2,7 +2,7 @@ import { ComponentClass } from 'react';
 import Taro, { Component, Config } from '@tarojs/taro';
 import { connect } from '@tarojs/redux';
 import { View, Text } from '@tarojs/components';
-import { AtButton, AtCard, AtIcon } from 'taro-ui';
+import { AtButton, AtIcon } from 'taro-ui';
 import './address.less';
 import ANavBar from '../../components/ANavBar';
 import userAction from '../../actions/authAction';

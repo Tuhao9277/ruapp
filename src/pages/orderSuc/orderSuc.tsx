@@ -207,6 +207,14 @@ class Index extends Component {
                     >
                       去支付
                     </AtButton>
+                    <AtButton
+                      onClick={() => this.showCancelOrderModal()}
+                      circle
+                      size="small"
+                      customStyle={{ color: '#999' }}
+                    >
+                      取消订单
+                    </AtButton>
                   </View>
                 )}
               </View>
