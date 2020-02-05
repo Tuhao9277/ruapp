@@ -39,7 +39,7 @@ class Register extends Component {
   }
   handleOpenidChange(value) {
     this.setState({
-      openid: value,
+      openid: value.replace(/[^A-Za-z0-9_]\s*/g,''),
     });
   }
   handleUsernameChange(value) {
@@ -82,6 +82,7 @@ class Register extends Component {
         <AtForm className="dd-padding" onSubmit={this.onSubmit.bind(this)}>
           <AtInput
             name="openid"
+            maxLength={20}
             title="用户ID"
             type="text"
             placeholder="支持英文和数字，用于登录"
@@ -91,6 +92,7 @@ class Register extends Component {
           <AtInput
             name="username"
             title="真实姓名"
+            maxLength={15}
             type="text"
             placeholder="请输入真实姓名"
             value={this.state.username}
@@ -99,6 +101,7 @@ class Register extends Component {
           <AtInput
             name="password"
             title="密码"
+            maxLength={20}
             type="password"
             placeholder="请输入密码"
             value={this.state.password}
