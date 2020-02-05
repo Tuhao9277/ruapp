@@ -78,6 +78,11 @@ class Order extends Component {
     userAction.getUserInfo({ openid: props.openid });
     userAction.getUserAddress({ buyerId: props.buyerId });
   }
+  handleToAddAddr(){
+    Taro.navigateTo({
+      url:'/pages/address/addressForm'
+    })
+  }
   renderOrderProduct() {
     const { chooseList } = this.props.currentOrder;
     return chooseList.map(({ id, icon, name, description, price, chooseCount }) => {
@@ -174,10 +179,10 @@ class Order extends Component {
       url: `/pages/orderSuc/orderSuc?orderId=${orderId}`,
     });
   }
-  handleToUpdateAddr(){
+  handleToUpdateAddr() {
     Taro.navigateTo({
-      url:'/pages/address/addressUpdateForm'
-    })
+      url: '/pages/address/addressUpdateForm',
+    });
   }
   render() {
     const { currentOrder, account, currentAddress } = this.props;
@@ -190,21 +195,28 @@ class Order extends Component {
           <View>
             <Text className="lastTime">约{formatterTime(Date.now() + 30 * 60 * 1000)}后送达</Text>
           </View>
-          <View className="orderUserInfoWrapper" onClick={this.handleToUpdateAddr.bind(this)}>
-            <View className="userInfoLeft">
-              <Text className="userName">
-                {currentAddress.recName}
-                <Text className="userPhone">{currentAddress.recTelephone}</Text>
-              </Text>
-              <View className="userAddr">
-                <AtIcon value="map-pin" size="18" color="#fff" />
-                <Text className="userAddrText">{currentAddress.recAddress}</Text>
+          {currentAddress.recId ? (
+            <View className="orderUserInfoWrapper" onClick={this.handleToUpdateAddr.bind(this)}>
+              <View className="userInfoLeft">
+                <Text className="userName">
+                  {currentAddress.recName}
+                  <Text className="userPhone">{currentAddress.recTelephone}</Text>
+                </Text>
+                <View className="userAddr">
+                  <AtIcon value="map-pin" size="18" color="#fff" />
+                  <Text className="userAddrText">{currentAddress.recAddress}</Text>
+                </View>
+              </View>
+              <View className="userInfoRight">
+                <AtIcon value="chevron-right" size="24" color="#fff" />
               </View>
             </View>
-            <View className="userInfoRight">
-              <AtIcon value="chevron-right" size="24" color="#fff" />
+          ) : (
+            <View className="noAddress">
+              当前用户暂无收货地址，请先
+              <Text className="noAddressLink" onClick={this.handleToAddAddr.bind(this)}>添加收货地址</Text>
             </View>
-          </View>
+          )}
           <View className="dd-padding order">
             <View className="dd-padding">{this.renderOrderProduct()}</View>
             <View className="orderBottom">
@@ -230,6 +242,7 @@ class Order extends Component {
           </View>
         </View>
         <AtButton
+          disabled={!currentAddress.recId}
           className="shopBtn"
           loading={this.state.prePayLoading}
           type="primary"

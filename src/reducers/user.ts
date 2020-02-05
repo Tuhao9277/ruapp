@@ -44,7 +44,7 @@ export default function user(state = INITIAL_STATE, { type, payload }) {
       return {
         ...state,
         addressList: data,
-        currentAddress: data[0],
+        currentAddress: data[0] ||INITIAL_STATE.currentAddress,
       };
     }
     case CHANGE_CURRENT_ADDR: {

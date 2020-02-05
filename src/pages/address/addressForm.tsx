@@ -191,9 +191,9 @@ class AddressForm extends Component {
           cancelText="取消"
           title="目前只支持三个城市"
         >
-          <AtActionSheetItem onClick={this.handleChangeCity.bind(this)}>北京</AtActionSheetItem>
-          <AtActionSheetItem onClick={this.handleChangeCity.bind(this)}>淄博</AtActionSheetItem>
-          <AtActionSheetItem onClick={this.handleChangeCity.bind(this)}>聊城</AtActionSheetItem>
+          <AtActionSheetItem onClick={this.handleChangeCity.bind(this)}>北京市</AtActionSheetItem>
+          <AtActionSheetItem onClick={this.handleChangeCity.bind(this)}>淄博市</AtActionSheetItem>
+          <AtActionSheetItem onClick={this.handleChangeCity.bind(this)}>济南市</AtActionSheetItem>
         </AtActionSheet>
         <AtModal
           isOpened={this.state.isOopenModal}
