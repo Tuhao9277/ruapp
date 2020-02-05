@@ -7,7 +7,7 @@ import menuAction from '../../actions/product';
 import banner1 from './../../images/offers@2x.png';
 import HomeMenu from './HomeMenu';
 import './index.less';
-import ShopBarIcon from './../../components/ShopBarIcon'
+import ShopBarIcon from './../../components/ShopBarIcon';
 // #region 书写注意
 //
 // 目前 typescript 版本还无法在装饰器模式下将 Props 注入到 Taro.Component 中的 props 属性
@@ -25,6 +25,7 @@ type PageStateProps = {
   orderMenu: [];
   exploreMenu: [];
   totalCount: number;
+  username: string;
   gussusLike: [];
 };
 
@@ -38,7 +39,8 @@ interface Index {
   props: IProps;
 }
 
-@connect(({ orderTab, product }) => ({
+@connect(({ orderTab, product, user }) => ({
+  username: user.userInfo.username,
   orderMenu: orderTab.orderMenu,
   totalCount: product.totalCount,
   exploreMenu: orderTab.exploreMenu,
@@ -59,9 +61,6 @@ class Index extends Component {
     }
   }
 
-  componentWillReceiveProps(nextProps) {
-    console.log(this.props, nextProps);
-  }
   navigateToOrder = (tabName: string) => {
     console.log(tabName);
   };
@@ -110,12 +109,12 @@ class Index extends Component {
     navigationBarTitleText: 'STARBUCKS',
   };
   render() {
-    const {totalCount} = this.props
+    const { totalCount,username } = this.props;
     return (
       <View className="index">
         <View className="homeHeader">
           <View className="welcomeTip">
-            早上好,<Text>Mamoru</Text>
+            你好,<Text>{username}</Text>
           </View>
           <View className="welcomeSubTip">
             <Text>人生得意须尽欢，莫使☕️空对月</Text>

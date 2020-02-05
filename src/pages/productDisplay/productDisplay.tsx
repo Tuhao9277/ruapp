@@ -21,9 +21,6 @@ interface ProductDisplay {
 }
 
 class ProductDisplay extends Component {
-  componentWillMount() {
-    console.log(this.$router.params);
-  }
   componentWillReceiveProps(nextProps) {}
 
   componentDidShow() {}

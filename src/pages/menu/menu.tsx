@@ -1,7 +1,7 @@
 import { ComponentClass } from 'react';
 import Taro, { Component, Config } from '@tarojs/taro';
 import { AtTabs, AtTabsPane, AtCard } from 'taro-ui';
-import { View,Text } from '@tarojs/components';
+import { View, Text } from '@tarojs/components';
 import { connect } from '@tarojs/redux';
 import { IproductList } from './../../reducers/productList';
 import './menu.less';
@@ -10,7 +10,8 @@ import orderAction from '../../actions/order';
 import ProductItem from './../../components/ProductItem';
 import { OrderStatus, PayStatus } from './../../const/status';
 import { formattedTime } from '../../utils/index';
-import ShopBar from '../shopBar/ShopBar'
+import ShopBar from '../shopBar/shopBar';
+import MenuList from '../menuList/menuList';
 
 export interface Ifood {
   id: string;
@@ -22,7 +23,6 @@ export interface Ifood {
   index: number;
   outIndex: number;
 }
-
 
 type PageStateProps = {
   openid: string;
@@ -59,7 +59,7 @@ class Menu extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      current:0,
+      current: 0,
     };
     if (props.openid) {
       this.getOrderList();
@@ -68,9 +68,7 @@ class Menu extends Component {
       menuAction.getMenuList();
     }
   }
-  handleClick(value) {
-    menuAction.changeMenuKey(value);
-  }
+
   handleTopClick(current) {
     this.setState({
       current,
@@ -103,11 +101,11 @@ class Menu extends Component {
         >
           <View className="listItem">
             {item.spus.map((food: Ifood, idx) => {
-              food.outIndex = index
+              food.outIndex = index;
               if (food.chooseCount === undefined) {
                 food.chooseCount = 0;
               }
-              if(food.index === undefined){
+              if (food.index === undefined) {
                 food.index = idx;
               }
               return (
@@ -132,35 +130,36 @@ class Menu extends Component {
   }
   renderOrderList() {
     const { orderList } = this.props;
-    return orderList.map((item: IorderItem) => {
-      const { createTime, orderAmount, orderStatus, payStatus } = item;
-      return (
-        <AtCard
-          onClick={() => this.handleRouterToOrderDetail(item.orderId)}
-          key={item.orderId}
-          className="orderItemWrapper"
-          note={formattedTime(createTime)}
-          extra={item.buyerAddress}
-          title={`订单号：${item.orderId}`}
-        >
-          <View className="orderInfo">
-            <Text className={payStatus === 0 ? 'orderPayTip' : ''}>{PayStatus[payStatus]}</Text>
-            <Text className={orderStatus === 2 ? 'orderCancel' : ''}>
-              {OrderStatus[orderStatus]}
-            </Text>
-          </View>
-          {`共${orderAmount}元商品`}
-        </AtCard>
-      );
-    });
+    return orderList.map(
+      ({ orderId, createTime, buyerAddress, orderAmount, orderStatus, payStatus }) => {
+        return (
+          <AtCard
+            onClick={() => this.handleRouterToOrderDetail(orderId)}
+            key={orderId}
+            className="orderItemWrapper"
+            note={formattedTime(createTime)}
+            extra={buyerAddress}
+            title={`订单号：${orderId}`}
+          >
+            <View className="orderInfo">
+              <Text className={payStatus === 0 ? 'orderPayTip' : ''}>{PayStatus[payStatus]}</Text>
+              <Text className={orderStatus === 2 ? 'orderCancel' : ''}>
+                {OrderStatus[orderStatus]}
+              </Text>
+            </View>
+            {`共${orderAmount}元商品`}
+          </AtCard>
+        );
+      },
+    );
   }
   config: Config = {
     navigationBarTitleText: '菜单',
   };
 
   render() {
-    const tabList = [{ title: '菜单' }, { title: '购物车' }];
-    const { productCategory, activeKey } = this.props;
+    const tabList = [{ title: '菜单' }, { title: '购物车' }, { title: '推荐' }];
+    const { productCategory, activeKey, shopCarData } = this.props;
     return (
       <View className="homeMenuWrapper">
         <AtTabs
@@ -170,21 +169,16 @@ class Menu extends Component {
           onClick={this.handleTopClick.bind(this)}
         >
           <AtTabsPane current={this.state.current} index={0}>
-            <View style="height:100%;padding:10px 0;text-align: left;">
-              <AtTabs
-                current={activeKey}
-                scroll
-                height="600px"
-                tabDirection="vertical"
-                tabList={productCategory}
-                onClick={this.handleClick.bind(this)}
-              >
-                {this.renderTabsPane()}
-              </AtTabs>
-            </View>
+            <MenuList
+              shopCarData={shopCarData}
+              productCategory={productCategory}
+              activeKey={activeKey}
+            />
           </AtTabsPane>
           <AtTabsPane current={this.state.current} index={1}>
             <ShopBar />
+          </AtTabsPane>
+          <AtTabsPane current={this.state.current} index={2}>
           </AtTabsPane>
         </AtTabs>
       </View>

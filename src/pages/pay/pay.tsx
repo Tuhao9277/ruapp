@@ -41,11 +41,6 @@ class Pay extends Component {
    * 提示和声明 navigationBarTextStyle: 'black' | 'white' 类型冲突, 需要显示声明类型
    */
 
-
-  componentWillReceiveProps (nextProps) {
-    console.log(this.props, nextProps)
-  }
-
   componentWillUnmount () { }
 
   componentDidShow () { }

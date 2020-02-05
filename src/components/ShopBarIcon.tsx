@@ -29,7 +29,7 @@ class ShopBarIcon extends Taro.Component<K, T> {
           </AtFab>
         </View>
         <AtNoticebar className="noticeBar" customStyle="bottom:50px" icon="volume-plus">
-          点单满80免配送费，再送买一张送一礼券
+          点单满80免配送费，再送买一送一礼券
         </AtNoticebar>
       </View>
     );

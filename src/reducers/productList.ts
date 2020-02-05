@@ -27,7 +27,6 @@ const INITIAL_STATE: State = {
   gussusLike: [],
 };
 const dealWithSelectItem = (state: State, { id, outIndex }, type) => {
-  console.log(id,outIndex)
   const listData = state.shopCarData;
   const productId = id;
   const list = listData;
