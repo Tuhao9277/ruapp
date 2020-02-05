@@ -26,14 +26,18 @@ export default class HomeMenu extends Taro.Component<K, T> {
     const { gussusLike } = this.props;
     if (gussusLike && gussusLike.length)
       return gussusLike[0].spus.map((food: Ifood, idx) => {
-        if (!food.chooseCount) {
+        if (food.chooseCount === undefined) {
           food.chooseCount = 0;
+        }
+        if(food.index === undefined){
+          food.index = idx;
         }
         return (
           <ProductItem
             chooseCount={food.chooseCount}
             key={food.id}
-            idx={idx}
+            outIndex={0}
+            idx={food.index}
             title={food.name}
             desc={food.description}
             price={food.price}
@@ -48,7 +52,7 @@ export default class HomeMenu extends Taro.Component<K, T> {
     return (
       <AtTabs current={this.state.current} tabList={tabList} onClick={this.handleClick.bind(this)}>
         <AtTabsPane current={this.state.current} index={0}>
-          <View style="padding:10px 0;text-align: left;">{this.renderGussLike()}</View>
+          <View className="gussusLikeWrapper">{this.renderGussLike()}</View>
         </AtTabsPane>
         {/* <AtTabsPane current={this.state.current} index={1}>
           <View style="padding:10px;text-align: center;">{}</View>

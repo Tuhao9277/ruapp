@@ -11,6 +11,7 @@ import ProductItem from './../../components/ProductItem';
 import shopPackageImg from './../../images/shopPackage.png';
 import { OrderStatus, PayStatus } from './../../const/status';
 import { formattedTime } from '../../utils/index';
+import ShopBarIcon from '../../components/ShopBarIcon'
 
 export interface Ifood {
   id: string;
@@ -85,11 +86,7 @@ class Menu extends Component {
       current,
     });
   }
-  handleRouterToShopBar() {
-    Taro.navigateTo({
-      url: '/pages/shopBar/shopBar',
-    });
-  }
+
   handleRouterToOrderDetail(orderId: string) {
     Taro.navigateTo({
       url: `/pages/orderSuc/orderSuc?orderId=${orderId}`,
@@ -205,16 +202,8 @@ class Menu extends Component {
             </View>
           </AtTabsPane>
         </AtTabs>
-        <View className="postShopBar">
-          <AtFab onClick={this.handleRouterToShopBar.bind(this)}>
-            <AtBadge value={totalCount} maxValue={99}>
-              <Image style="width:35px;height:35px" src={shopPackageImg} mode="aspectFill" />
-            </AtBadge>
-          </AtFab>
-        </View>
-        <AtNoticebar className="dd-padding noticeBar" icon="volume-plus">
-          点单满80免配送费，再送买一张送一礼券
-        </AtNoticebar>
+        <ShopBarIcon totalCount={totalCount} />
+
       </View>
     );
   }

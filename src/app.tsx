@@ -61,17 +61,23 @@ class App extends Component {
           selectedIconPath: './images/home-active.png',
           pagePath: 'pages/index/index',
         },
-        {
-          text: '星礼卡',
-          iconPath: './images/pay.png',
-          selectedIconPath: './images/pay-active.png',
-          pagePath: 'pages/pay/pay',
-        },
+        // {
+        //   text: '星礼卡',
+        //   iconPath: './images/pay.png',
+        //   selectedIconPath: './images/pay-active.png',
+        //   pagePath: 'pages/pay/pay',
+        // },
         {
           text: '菜单',
           iconPath: './images/coffee.png',
           selectedIconPath: './images/coffee-active.png',
           pagePath: 'pages/menu/menu',
+        },
+        {
+          text: '购物车',
+          iconPath: './images/cart.png',
+          selectedIconPath: './images/cart-active.png',
+          pagePath: 'pages/shopBar/shopBar',
         },
         {
           text: '我的',

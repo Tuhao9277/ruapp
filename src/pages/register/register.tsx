@@ -84,7 +84,7 @@ class Register extends Component {
             name="openid"
             title="用户ID"
             type="text"
-            placeholder="支持英文和数字"
+            placeholder="支持英文和数字，用于登录"
             value={this.state.openid}
             onChange={this.handleOpenidChange.bind(this)}
           />

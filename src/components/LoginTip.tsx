@@ -16,7 +16,7 @@ class LoginTip extends Component {
   render() {
     return (
       <View className="myWrapper">
-        <Text>登录星巴克App享受更多精彩服务</Text>
+        <Text>登录吃了么App享受更多精彩服务</Text>
         <Text style="color:#35a56b" onClick={() => this.navigateToLogin()}>
           立即登录
         </Text>

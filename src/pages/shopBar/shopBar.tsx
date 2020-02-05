@@ -98,11 +98,6 @@ class ShopBar extends Component {
     const data = this.getTotalPrice();
     return (
       <View className="ShopBar">
-        <AtNavBar
-          onClickLeftIcon={this.hanldeRouterBack.bind(this)}
-          color="#000"
-          leftIconType="chevron-left"
-        />
         <Text className="dd-padding">购物车({data.dotNum})</Text>
         <AtNoticebar className="dd-padding shopBarNotice" icon="volume-plus">
           点单满80免配送费，再送买一送一礼券

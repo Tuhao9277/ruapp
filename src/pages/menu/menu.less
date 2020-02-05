@@ -5,6 +5,11 @@
 .listItem {
   padding: 30px;
   width: 100%;
+  .foodItem{
+    &:last-child{
+      margin-bottom: 100px;
+    }
+  }
 }
 .menuTabWrapper {
   > .at-tabs__header {
@@ -20,18 +25,6 @@
       padding: 0;
     }
   }
-}
-.postShopBar {
-  position: fixed;
-  right: 60px;
-  bottom: 120px;
-  z-index: 1;
-}
-.noticeBar {
-  padding: 20px 0;
-  width: 100%;
-  position: fixed;
-  bottom: 100px;
 }
 .orderInfo {
   display: flex;

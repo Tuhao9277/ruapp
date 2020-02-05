@@ -21,7 +21,7 @@ const INITIAL_STATE = {
   exploreMenu:[
     {
       title:'菜单',
-      rowKey:'fullMenu'
+      rowKey:'menu'
     },
     {
       title:'产品',
