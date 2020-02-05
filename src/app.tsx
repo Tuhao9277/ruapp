@@ -41,6 +41,7 @@ class App extends Component {
       'pages/menu/menu',
       'pages/shopBar/shopBar',
       'pages/order/order',
+      'pages/orderList/orderList',
       'pages/orderSuc/orderSuc',
       'pages/address/address',
       'pages/address/addressForm',
@@ -74,10 +75,10 @@ class App extends Component {
           pagePath: 'pages/menu/menu',
         },
         {
-          text: '购物车',
-          iconPath: './images/cart.png',
-          selectedIconPath: './images/cart-active.png',
-          pagePath: 'pages/shopBar/shopBar',
+          text: '订单',
+          iconPath: './images/order.png',
+          selectedIconPath: './images/order-active.png',
+          pagePath: 'pages/orderList/orderList',
         },
         {
           text: '我的',

@@ -2,12 +2,13 @@ import { ComponentClass } from 'react';
 import Taro, { Component } from '@tarojs/taro';
 import { View, Text } from '@tarojs/components';
 import { connect } from '@tarojs/redux';
-import { AtNavBar, AtButton, AtNoticebar } from 'taro-ui';
+import { AtButton, AtNoticebar } from 'taro-ui';
 import './ShopBar.less';
 import { Ifood } from '../menu/menu';
-import { IproductList } from './../../reducers/productList';
-import ProductItem from './../../components/ProductItem';
-import orderAction from './../../actions/order';
+import { IproductList } from '../../reducers/productList';
+import ProductItem from '../../components/ProductItem';
+import orderAction from '../../actions/order';
+import ANavBar from '../../components/ANavBar';
 
 type PageStateProps = {
   status: boolean;
@@ -82,7 +83,7 @@ class ShopBar extends Component {
       Taro.navigateTo({
         url: `/pages/login/login`,
       });
-      return
+      return;
     }
     orderAction.saveOrderData(data);
     Taro.navigateTo({
@@ -98,6 +99,7 @@ class ShopBar extends Component {
     const data = this.getTotalPrice();
     return (
       <View className="ShopBar">
+        {this.$router.path !=='/pages/menu/menu' && <ANavBar />}
         <Text className="dd-padding">购物车({data.dotNum})</Text>
         <AtNoticebar className="dd-padding shopBarNotice" icon="volume-plus">
           点单满80免配送费，再送买一送一礼券
@@ -106,7 +108,7 @@ class ShopBar extends Component {
           {this.renderTabsPane(data.chooseList)}
         </View>
         {!!data.dotNum && (
-          <AtButton className="shopBtn" type="primary" onClick={() => this.handleRouterTo(data)}>
+          <AtButton className="cartBtn" type="primary" onClick={() => this.handleRouterTo(data)}>
             结算：¥{data.totalPrice}
           </AtButton>
         )}

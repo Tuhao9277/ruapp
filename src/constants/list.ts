@@ -9,4 +9,5 @@ export const GET_ORDER_LIST = "GET_ORDER_LIST"
 export const SAVE_ORDER_DATA = "SAVE_ORDER_DATA"
 export const CREATE_ORDER_LIST = "CREATE_ORDER_LIST"
 export const ORDER_DETAIL = "ORDER_DETAIL"
+export const MENU_CURRENT = "MENU_CURRENT"
 

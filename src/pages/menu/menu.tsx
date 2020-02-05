@@ -1,17 +1,16 @@
 import { ComponentClass } from 'react';
 import Taro, { Component, Config } from '@tarojs/taro';
-import { AtTabs, AtTabsPane, AtFab, AtNoticebar, AtBadge, AtCard } from 'taro-ui';
-import { View, Image, Text } from '@tarojs/components';
+import { AtTabs, AtTabsPane, AtCard } from 'taro-ui';
+import { View,Text } from '@tarojs/components';
 import { connect } from '@tarojs/redux';
 import { IproductList } from './../../reducers/productList';
 import './menu.less';
 import menuAction from '../../actions/product';
 import orderAction from '../../actions/order';
 import ProductItem from './../../components/ProductItem';
-import shopPackageImg from './../../images/shopPackage.png';
 import { OrderStatus, PayStatus } from './../../const/status';
 import { formattedTime } from '../../utils/index';
-import ShopBarIcon from '../../components/ShopBarIcon'
+import ShopBar from '../shopBar/ShopBar'
 
 export interface Ifood {
   id: string;
@@ -23,16 +22,7 @@ export interface Ifood {
   index: number;
   outIndex: number;
 }
-interface IorderItem {
-  orderId: string;
-  buyerName: string;
-  orderPhone: string;
-  buyerAddress: string;
-  orderAmount: number;
-  orderStatus: number;
-  payStatus: number;
-  createTime: number;
-}
+
 
 type PageStateProps = {
   openid: string;
@@ -69,7 +59,7 @@ class Menu extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      current: 0,
+      current:0,
     };
     if (props.openid) {
       this.getOrderList();
@@ -169,8 +159,8 @@ class Menu extends Component {
   };
 
   render() {
-    const tabList = [{ title: '菜单' }, { title: '推荐' }, { title: '订单' }];
-    const { productCategory, activeKey, orderList, totalCount } = this.props;
+    const tabList = [{ title: '菜单' }, { title: '购物车' }];
+    const { productCategory, activeKey } = this.props;
     return (
       <View className="homeMenuWrapper">
         <AtTabs
@@ -194,16 +184,9 @@ class Menu extends Component {
             </View>
           </AtTabsPane>
           <AtTabsPane current={this.state.current} index={1}>
-            <View style="padding:10px;text-align: center;">{}</View>
-          </AtTabsPane>
-          <AtTabsPane current={this.state.current} index={2}>
-            <View className="dd-padding orderListWrapper">
-              {!orderList.length ? <Text className="emptyOrderTip">当前没有订单，快去下单吧</Text> : this.renderOrderList()}
-            </View>
+            <ShopBar />
           </AtTabsPane>
         </AtTabs>
-        <ShopBarIcon totalCount={totalCount} />
-
       </View>
     );
   }
