@@ -19,8 +19,8 @@ export interface Ifood {
   description: string;
   icon: string;
   chooseCount: number;
-  index?: number;
-  outIndex?: number;
+  index: number;
+  outIndex: number;
 }
 interface IorderItem {
   orderId: string;
@@ -116,14 +116,19 @@ class Menu extends Component {
         >
           <View className="listItem">
             {item.spus.map((food: Ifood, idx) => {
-              if (!food.chooseCount) {
+              food.outIndex = index
+              if (food.chooseCount === undefined) {
                 food.chooseCount = 0;
+              }
+              if(food.index === undefined){
+                food.index = idx;
               }
               return (
                 <View key={food.id} className="foodItem">
                   <ProductItem
+                    outIndex={food.outIndex}
                     chooseCount={food.chooseCount}
-                    idx={idx}
+                    idx={food.index}
                     title={food.name}
                     desc={food.description}
                     price={food.price}

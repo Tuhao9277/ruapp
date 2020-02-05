@@ -15,6 +15,7 @@ type PageStateProps = {
 type PageDispatchProps = {};
 
 type PageOwnProps = {
+  outIndex: number;
   chooseCount: number;
   idx: number;
   productId: string;
@@ -43,14 +44,14 @@ class ProductItem extends Taro.Component {
       url: `/pages/productDisplay/productDisplay?id=${id}`,
     });
   }
-  addSelectItem(id) {
-    productAction.addSelectItem({ id });
+  addSelectItem(id, outIndex) {
+    productAction.addSelectItem({ id, outIndex });
   }
-  minusSelectItem(id) {
-    productAction.minusSelectItem({ id });
+  minusSelectItem(id, outIndex) {
+    productAction.minusSelectItem({ id, outIndex });
   }
   render() {
-    const { title, price, imageUrl, productId, idx, desc, chooseCount } = this.props;
+    const { title, price, imageUrl, productId, idx, desc, chooseCount, outIndex } = this.props;
     return (
       <View className="productItemWrapper">
         <Image
@@ -72,7 +73,7 @@ class ProductItem extends Taro.Component {
                 src={minusIcon}
                 mode="scaleToFill"
                 onClick={() => {
-                  this.minusSelectItem(idx);
+                  this.minusSelectItem(idx, outIndex);
                 }}
               />
             )}
@@ -82,7 +83,7 @@ class ProductItem extends Taro.Component {
               mode="scaleToFill"
               src={addIcon}
               onClick={() => {
-                this.addSelectItem(idx);
+                this.addSelectItem(idx, outIndex);
               }}
             />
           </View>

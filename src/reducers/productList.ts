@@ -27,11 +27,11 @@ const INITIAL_STATE: State = {
   gussusLike: [],
 };
 const dealWithSelectItem = (state: State, { id, outIndex }, type) => {
+  console.log(id,outIndex)
   const listData = state.shopCarData;
-  const leftIndex = state.activeKey;
   const productId = id;
   const list = listData;
-  const currentItem = list[outIndex || leftIndex];
+  const currentItem = list[outIndex];
   // 找到外层左边的list列表
   // 对当前点击的加一 或减一
   if (type === ADD_SELECT_ITEM) {
@@ -41,6 +41,7 @@ const dealWithSelectItem = (state: State, { id, outIndex }, type) => {
       currentItem['spus'][productId].chooseCount = 1;
     }
   } else {
+    if(currentItem['spus'][productId].chooseCount>0 )
     currentItem['spus'][productId].chooseCount--;
   }
   const _listData = JSON.parse(JSON.stringify(listData));

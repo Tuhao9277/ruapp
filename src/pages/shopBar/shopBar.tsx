@@ -47,8 +47,7 @@ class ShopBar extends Component {
         const chooseCount = spus[j].chooseCount;
         if (chooseCount > 0) {
           dotNum += chooseCount;
-          spus[j].index = j;
-          spus[j].outIndex = i;
+
           chooseList.push(spus[j]);
           totalPrice += spus[j].price * chooseCount;
         }
@@ -61,12 +60,13 @@ class ShopBar extends Component {
     };
   }
   renderTabsPane(chooseList) {
-    return chooseList.map((food: Ifood, idx) => {
+    return chooseList.map((food: Ifood) => {
       return (
         <View key={food.id} className="foodItem">
           <ProductItem
+            outIndex={food.outIndex}
             chooseCount={food.chooseCount}
-            idx={idx}
+            idx={food.index}
             title={food.name}
             desc={food.description}
             price={food.price}
