@@ -106,7 +106,7 @@ class Index extends Component {
     });
   };
   config: Config = {
-    navigationBarTitleText: 'STARBUCKS',
+    navigationBarTitleText: '吃了么',
   };
   render() {
     const { totalCount,username } = this.props;

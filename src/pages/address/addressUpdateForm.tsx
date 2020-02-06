@@ -1,15 +1,15 @@
 import { ComponentClass } from 'react';
 import Taro, { Component } from '@tarojs/taro';
 import { View, Text } from '@tarojs/components';
-import { connect } from '@tarojs/redux'
-import { AtRadio } from 'taro-ui';
+import { connect } from '@tarojs/redux';
+import { AtRadio, AtButton } from 'taro-ui';
 import './address.less';
 import userAction from '../../actions/authAction';
-import ANavBar from './../../components/ANavBar'
+import ANavBar from './../../components/ANavBar';
 
 type PageStateProps = {
-  addressList:[],
-  currentAddress:{}
+  addressList: [];
+  currentAddress: {};
 };
 
 type PageDispatchProps = {};
@@ -33,7 +33,7 @@ interface Index {
 class Index extends Component {
   constructor(props) {
     super(props);
-    const currentAddr = props.currentAddress.recId
+    const currentAddr = props.currentAddress.recId;
     this.state = {
       currentAddr,
     };
@@ -45,24 +45,29 @@ class Index extends Component {
   componentDidShow() {}
 
   componentDidHide() {}
-  renderOptions(){
-    const {addressList} = this.props
-    return addressList.map(({recId, recName, recTelephone, recAddress})=>({
-        label: recName + recTelephone + recAddress,
-        value: recId,
-    }))
+  renderOptions() {
+    const { addressList } = this.props;
+    return addressList.map(({ recId, recName, recTelephone, recAddress }) => ({
+      label: recName + recTelephone + recAddress,
+      value: recId,
+    }));
   }
-  handleChangecurrentAddr(value){
-    const {addressList} = this.props
+  handleChangecurrentAddr(value) {
+    const { addressList } = this.props;
     this.setState({
-      currentAddr:value
-    })
-    addressList.forEach(item=>{
-      if(item.recId === value){
-        userAction.changeCurrentAddr(item)
-        return
+      currentAddr: value,
+    });
+    addressList.forEach(item => {
+      if (item.recId === value) {
+        userAction.changeCurrentAddr(item);
+        return;
       }
-    })
+    });
+  }
+  handleToNewAddr() {
+    Taro.navigateTo({
+      url: '/pages/address/addressForm',
+    });
   }
   render() {
     return (
@@ -74,6 +79,9 @@ class Index extends Component {
           value={this.state.currentAddr}
           onClick={this.handleChangecurrentAddr.bind(this)}
         />
+        <AtButton type="primary" onClick={this.handleToNewAddr.bind(this)}>
+          新增收货地址
+        </AtButton>
       </View>
     );
   }

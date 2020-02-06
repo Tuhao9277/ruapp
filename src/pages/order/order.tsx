@@ -8,6 +8,7 @@ import './order.less';
 import ANavBar from './../../components/ANavBar';
 import userAction from './../../actions/authAction';
 import api from './../../service/api';
+import productAction from './../../actions/product';
 
 type PageStateProps = {};
 
@@ -162,6 +163,7 @@ class Order extends Component {
       items,
     };
     api.post('order/create', params).then(res => {
+      productAction.clearCar({});
       this.setState({
         prePayLoading: false,
       });

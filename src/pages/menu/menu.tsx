@@ -158,7 +158,7 @@ class Menu extends Component {
   };
 
   render() {
-    const tabList = [{ title: '菜单' }, { title: '购物车' }, { title: '推荐' }];
+    const tabList = [{ title: '菜单' }, { title: '购物车' }];
     const { productCategory, activeKey, shopCarData } = this.props;
     return (
       <View className="homeMenuWrapper">
@@ -177,8 +177,6 @@ class Menu extends Component {
           </AtTabsPane>
           <AtTabsPane current={this.state.current} index={1}>
             <ShopBar />
-          </AtTabsPane>
-          <AtTabsPane current={this.state.current} index={2}>
           </AtTabsPane>
         </AtTabs>
       </View>

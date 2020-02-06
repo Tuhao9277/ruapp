@@ -118,6 +118,7 @@ class AddressForm extends Component {
       title: '加载中',
     });
     api.post('rec/del', { recId }).then(res => {
+      const { buyerId } = this.props;
       if (res.data.code === 0) {
         Taro.hideLoading();
         Taro.showToast({
@@ -127,6 +128,7 @@ class AddressForm extends Component {
         });
         setTimeout(()=>{
           Taro.navigateBack()
+          userAction.getUserAddress({ buyerId });
         },1500)
       }
     });

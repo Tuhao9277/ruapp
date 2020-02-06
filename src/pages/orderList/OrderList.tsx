@@ -1,5 +1,5 @@
 import { ComponentClass } from 'react';
-import Taro, { Component } from '@tarojs/taro';
+import Taro, { Component, Config } from '@tarojs/taro';
 import { View, Text } from '@tarojs/components';
 import { connect } from '@tarojs/redux';
 import { AtCard } from 'taro-ui'
@@ -60,6 +60,9 @@ class OrderList extends Component {
       url: `/pages/orderSuc/orderSuc?orderId=${orderId}`,
     });
   }
+  config: Config = {
+    navigationBarTitleText: '订单',
+  };
   renderOrderList() {
     const { orderList } = this.props;
     return orderList.map((item: IorderItem) => {

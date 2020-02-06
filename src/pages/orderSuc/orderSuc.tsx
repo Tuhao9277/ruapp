@@ -10,7 +10,6 @@ import { OrderDetail } from './../../reducers/order';
 import courierImg from './../../images/courier.png';
 import api from './../../service/api';
 import userAction from './../../actions/authAction';
-import productAction from './../../actions/product';
 
 import { formattedTime } from '../../utils/index';
 
@@ -115,6 +114,14 @@ class Index extends Component {
       isOopenModal: false,
     });
   }
+  getOrderList(page = 0, size = 10) {
+    const params = {
+      openid: this.props.openid,
+      page,
+      size,
+    };
+    orderAction.getorderList(params);
+  }
   handleClosePayMethod() {
     this.setState(prevState => ({
       openPay: !prevState.openPay,
@@ -149,13 +156,13 @@ class Index extends Component {
         payLoading: false,
       });
       if (res.data.code === 0) {
-        productAction.clearCar({});
         Taro.showToast({
           title: '支付成功',
           icon: 'success',
           duration: 1000,
         }).then(() => {
           setTimeout(() => {
+            this.getOrderList()
             Taro.navigateBack();
           }, 1000);
         });
