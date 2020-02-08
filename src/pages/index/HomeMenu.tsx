@@ -26,12 +26,6 @@ export default class HomeMenu extends Taro.Component<K, T> {
     const { gussusLike } = this.props;
     if (gussusLike && gussusLike.length)
       return gussusLike[0].spus.map((food: Ifood, idx) => {
-        if (food.chooseCount === undefined) {
-          food.chooseCount = 0;
-        }
-        if(food.index === undefined){
-          food.index = idx;
-        }
         return (
           <ProductItem
             chooseCount={food.chooseCount}

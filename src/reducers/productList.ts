@@ -34,11 +34,7 @@ const dealWithSelectItem = (state: State, { id, outIndex }, type) => {
   // 找到外层左边的list列表
   // 对当前点击的加一 或减一
   if (type === ADD_SELECT_ITEM) {
-    if (currentItem['spus'][productId].chooseCount) {
       currentItem['spus'][productId].chooseCount++;
-    } else {
-      currentItem['spus'][productId].chooseCount = 1;
-    }
   } else {
     if (currentItem['spus'][productId].chooseCount > 0)
       currentItem['spus'][productId].chooseCount--;
@@ -81,8 +77,14 @@ export default function product(state = INITIAL_STATE, { type, payload }) {
       const productCategory = productList.map(item => {
         return { title: item.name };
       });
-      const shopCarData = productList.map(item => {
-        return { name: item.name, type: item.type, spus: item.foods };
+      const shopCarData = productList.map((item, idx) => {
+        return {
+          name: item.name,
+          type: item.type,
+          spus: item.foods.map((food, index) => {
+            return { ...food, chooseCount: 0, index, outIndex: idx };
+          }),
+        };
       });
       return {
         ...state,

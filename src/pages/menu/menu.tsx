@@ -1,15 +1,13 @@
 import { ComponentClass } from 'react';
 import Taro, { Component, Config } from '@tarojs/taro';
-import { AtTabs, AtTabsPane, AtCard } from 'taro-ui';
-import { View, Text } from '@tarojs/components';
+import { AtTabs, AtTabsPane } from 'taro-ui';
+import { View } from '@tarojs/components';
 import { connect } from '@tarojs/redux';
 import { IproductList } from './../../reducers/productList';
 import './menu.less';
 import menuAction from '../../actions/product';
 import orderAction from '../../actions/order';
 import ProductItem from './../../components/ProductItem';
-import { OrderStatus, PayStatus } from './../../const/status';
-import { formattedTime } from '../../utils/index';
 import ShopBar from '../shopBar/shopBar';
 import MenuList from '../menuList/menuList';
 
@@ -47,13 +45,12 @@ interface Menu {
   props: IProps;
   state: PageState;
 }
-@connect(({ product, user, order }) => ({
+@connect(({ product, user }) => ({
   openid: user.openid,
   shopCarData: product.shopCarData,
   totalCount: product.totalCount,
   productCategory: product.productCategory,
   activeKey: product.activeKey,
-  orderList: order.orderList,
 }))
 class Menu extends Component {
   constructor(props) {
@@ -61,9 +58,6 @@ class Menu extends Component {
     this.state = {
       current: 0,
     };
-    if (props.openid) {
-      this.getOrderList();
-    }
     if (!props.shopCarData.length) {
       menuAction.getMenuList();
     }
@@ -100,14 +94,7 @@ class Menu extends Component {
           index={index}
         >
           <View className="listItem">
-            {item.spus.map((food: Ifood, idx) => {
-              food.outIndex = index;
-              if (food.chooseCount === undefined) {
-                food.chooseCount = 0;
-              }
-              if (food.index === undefined) {
-                food.index = idx;
-              }
+            {item.spus.map((food: Ifood) => {
               return (
                 <View key={food.id} className="foodItem">
                   <ProductItem
@@ -127,31 +114,6 @@ class Menu extends Component {
         </AtTabsPane>
       );
     });
-  }
-  renderOrderList() {
-    const { orderList } = this.props;
-    return orderList.map(
-      ({ orderId, createTime, buyerAddress, orderAmount, orderStatus, payStatus }) => {
-        return (
-          <AtCard
-            onClick={() => this.handleRouterToOrderDetail(orderId)}
-            key={orderId}
-            className="orderItemWrapper"
-            note={formattedTime(createTime)}
-            extra={buyerAddress}
-            title={`订单号：${orderId}`}
-          >
-            <View className="orderInfo">
-              <Text className={payStatus === 0 ? 'orderPayTip' : ''}>{PayStatus[payStatus]}</Text>
-              <Text className={orderStatus === 2 ? 'orderCancel' : ''}>
-                {OrderStatus[orderStatus]}
-              </Text>
-            </View>
-            {`共${orderAmount}元商品`}
-          </AtCard>
-        );
-      },
-    );
   }
   config: Config = {
     navigationBarTitleText: '菜单',
