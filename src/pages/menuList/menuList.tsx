@@ -43,17 +43,11 @@ class Index extends Component {
           index={index}
         >
           <View className="listItem">
-            {item.spus.map((food: Ifood, idx) => {
-              food.outIndex = index;
-              if (food.chooseCount === undefined) {
-                food.chooseCount = 0;
-              }
-              if (food.index === undefined) {
-                food.index = idx;
-              }
+            {item.spus.map((food: Ifood) => {
               return (
                 <View key={food.id} className="foodItem">
                   <ProductItem
+                    stock={food.stock}
                     outIndex={food.outIndex}
                     chooseCount={food.chooseCount}
                     idx={food.index}

@@ -18,6 +18,7 @@ export interface Ifood {
   description: string;
   icon: string;
   chooseCount: number;
+  stock: number;
   index: number;
   outIndex: number;
 }

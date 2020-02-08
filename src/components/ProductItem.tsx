@@ -22,6 +22,7 @@ type PageOwnProps = {
   title: string;
   desc?: string;
   imageUrl: string;
+  stock: number;
   price: number;
 };
 
@@ -51,7 +52,17 @@ class ProductItem extends Taro.Component {
     productAction.minusSelectItem({ id, outIndex });
   }
   render() {
-    const { title, price, imageUrl, productId, idx, desc, chooseCount, outIndex } = this.props;
+    const {
+      title,
+      price,
+      imageUrl,
+      productId,
+      idx,
+      desc,
+      chooseCount,
+      outIndex,
+      stock,
+    } = this.props;
     return (
       <View className="productItemWrapper">
         <Image
@@ -63,6 +74,7 @@ class ProductItem extends Taro.Component {
         <View className="foodRight">
           <Text className="foodName">{title}</Text>
           <Text className="foodDesc two-line">{desc}</Text>
+          <Text className="foodDesc">库存：{stock}件</Text>
           <View className="foodPrice">
             ¥ <Text className="foodPriceHighLight">{price}</Text>
           </View>
