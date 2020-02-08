@@ -40,8 +40,8 @@ const dealWithSelectItem = (state: State, { id, outIndex }, type) => {
       currentItem['spus'][productId].chooseCount = 1;
     }
   } else {
-    if(currentItem['spus'][productId].chooseCount>0 )
-    currentItem['spus'][productId].chooseCount--;
+    if (currentItem['spus'][productId].chooseCount > 0)
+      currentItem['spus'][productId].chooseCount--;
   }
   const _listData = JSON.parse(JSON.stringify(listData));
   return _listData;
@@ -58,8 +58,13 @@ const minusListItem = (state, payload) => ({
   shopCarData: dealWithSelectItem(state, payload, MINUS_SELECT_ITEM),
 });
 const clearCar = state => {
-  const shopCarData = []
-  return { ...state, shopCarData};
+  const shopCarData = state.shopCarData;
+  for (let i = 0; i < shopCarData.length; i++) {
+    for (let j = 0; j < shopCarData[i].spus.length; j++) {
+      shopCarData[i].spus[j].chooseCount = 0;
+    }
+  }
+  return { ...state, shopCarData, totalCount: 0 };
 };
 
 export default function product(state = INITIAL_STATE, { type, payload }) {

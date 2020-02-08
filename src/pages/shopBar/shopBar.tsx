@@ -18,7 +18,14 @@ type PageDispatchProps = {};
 
 type PageOwnProps = {};
 
-type PageState = {};
+interface TotalPrice {
+  dotNum: number;
+  totalPrice: number;
+  chooseList: Ifood[];
+}
+type PageState = {
+  data: TotalPrice;
+};
 
 type IProps = PageStateProps & PageDispatchProps & PageOwnProps;
 
@@ -33,11 +40,15 @@ interface ShopBar {
 class ShopBar extends Component {
   constructor(props) {
     super(props);
-    this.state = {};
+    this.state = {
+      data: {
+        dotNum: 0,
+        totalPrice: 0,
+        chooseList: [],
+      },
+    };
   }
-  componentWillUnmount() {}
-
-  getTotalPrice() {
+  getTotalPrice(): TotalPrice {
     const shopCarData = this.props.shopCarData || [];
     let totalPrice = 0;
     let dotNum = 0;
@@ -48,7 +59,6 @@ class ShopBar extends Component {
         const chooseCount = spus[j].chooseCount;
         if (chooseCount > 0) {
           dotNum += chooseCount;
-
           chooseList.push(spus[j]);
           totalPrice += spus[j].price * chooseCount;
         }
@@ -96,20 +106,26 @@ class ShopBar extends Component {
   }
 
   render() {
-    const data = this.getTotalPrice();
+    this.setState({
+      data: this.getTotalPrice(),
+    });
     return (
       <View className="ShopBar">
-        {this.$router.path !=='/pages/menu/menu' && <ANavBar />}
-        <Text className="dd-padding">购物车({data.dotNum})</Text>
+        {this.$router.path !== '/pages/menu/menu' && <ANavBar />}
+        <Text className="dd-padding">购物车({this.state.data.dotNum})</Text>
         <AtNoticebar className="dd-padding shopBarNotice" icon="volume-plus">
           点单满80免配送费，再送买一送一礼券
         </AtNoticebar>
         <View className="dd-padding shopProductWrapper">
-          {this.renderTabsPane(data.chooseList)}
+          {this.renderTabsPane(this.state.data.chooseList)}
         </View>
-        {!!data.dotNum && (
-          <AtButton className="cartBtn" type="primary" onClick={() => this.handleRouterTo(data)}>
-            结算：¥{data.totalPrice}
+        {!!this.state.data.dotNum && (
+          <AtButton
+            className="cartBtn"
+            type="primary"
+            onClick={() => this.handleRouterTo(this.state.data)}
+          >
+            结算：¥{this.state.data.totalPrice}
           </AtButton>
         )}
       </View>
