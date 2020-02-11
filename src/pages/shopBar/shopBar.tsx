@@ -5,28 +5,26 @@ import { connect } from '@tarojs/redux';
 import { AtButton, AtNoticebar } from 'taro-ui';
 import './ShopBar.less';
 import { Ifood } from '../menu/menu';
-import { IproductList } from '../../reducers/productList';
+import { IproductList, ShopCarInfo } from '../../reducers/productList';
 import ProductItem from '../../components/ProductItem';
+import productAction from '../../actions/product';
 import orderAction from '../../actions/order';
 import ANavBar from '../../components/ANavBar';
 
 type PageStateProps = {
   status: boolean;
+  totalCount: number;
   shopCarData: IproductList[];
+  shopCarInfo: ShopCarInfo;
 };
 type PageDispatchProps = {};
 
 type PageOwnProps = {};
 
-interface TotalPrice {
-  dotNum: number;
+type PageState = {
   totalPrice: number;
   chooseList: Ifood[];
-}
-type PageState = {
-  data: TotalPrice;
 };
-
 type IProps = PageStateProps & PageDispatchProps & PageOwnProps;
 
 interface ShopBar {
@@ -36,45 +34,17 @@ interface ShopBar {
 @connect(({ user, product }) => ({
   status: user.status,
   shopCarData: product.shopCarData,
+  totalCount: product.totalCount,
+  shopCarInfo: product.shopCarInfo,
 }))
 class ShopBar extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      data: {
-        dotNum: 0,
-        totalPrice: 0,
-        chooseList: [],
-      },
-    };
-  }
-  getTotalPrice(): TotalPrice {
-    const shopCarData = this.props.shopCarData || [];
-    let totalPrice = 0;
-    let dotNum = 0;
-    const chooseList: Ifood[] = [];
-    for (let i = 0; i < shopCarData.length; i++) {
-      const spus = shopCarData[i].spus || [];
-      for (let j = 0; j < spus.length; j++) {
-        const chooseCount = spus[j].chooseCount;
-        if (chooseCount > 0) {
-          dotNum += chooseCount;
-          chooseList.push(spus[j]);
-          totalPrice += spus[j].price * chooseCount;
-        }
-      }
-    }
-    return {
-      dotNum,
-      totalPrice,
-      chooseList,
-    };
-  }
-  renderTabsPane(chooseList) {
+  renderTabsPane() {
+    const { chooseList } = this.props.shopCarInfo;
     return chooseList.map((food: Ifood) => {
       return (
         <View key={food.id} className="foodItem">
           <ProductItem
+            stock={food.stock}
             outIndex={food.outIndex}
             chooseCount={food.chooseCount}
             idx={food.index}
@@ -88,14 +58,15 @@ class ShopBar extends Component {
       );
     });
   }
-  handleRouterTo(data: {}) {
+
+  handleRouterTo() {
     if (!this.props.status) {
       Taro.navigateTo({
         url: `/pages/login/login`,
       });
       return;
     }
-    orderAction.saveOrderData(data);
+    orderAction.saveOrderData(this.props.shopCarInfo);
     Taro.navigateTo({
       url: `/pages/order/order`,
     });
@@ -106,26 +77,19 @@ class ShopBar extends Component {
   }
 
   render() {
-    this.setState({
-      data: this.getTotalPrice(),
-    });
+    const { shopCarInfo, totalCount } = this.props;
+    const { totalPrice } = shopCarInfo;
     return (
       <View className="ShopBar">
         {this.$router.path !== '/pages/menu/menu' && <ANavBar />}
-        <Text className="dd-padding">购物车({this.state.data.dotNum})</Text>
+        <Text className="dd-padding">购物车({totalCount})</Text>
         <AtNoticebar className="dd-padding shopBarNotice" icon="volume-plus">
           点单满80免配送费，再送买一送一礼券
         </AtNoticebar>
-        <View className="dd-padding shopProductWrapper">
-          {this.renderTabsPane(this.state.data.chooseList)}
-        </View>
-        {!!this.state.data.dotNum && (
-          <AtButton
-            className="cartBtn"
-            type="primary"
-            onClick={() => this.handleRouterTo(this.state.data)}
-          >
-            结算：¥{this.state.data.totalPrice}
+        <View className="dd-padding shopProductWrapper">{this.renderTabsPane()}</View>
+        {!!totalPrice && (
+          <AtButton className="cartBtn" type="primary" onClick={() => this.handleRouterTo()}>
+            结算：¥{totalPrice}
           </AtButton>
         )}
       </View>

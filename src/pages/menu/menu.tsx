@@ -7,7 +7,6 @@ import { IproductList } from './../../reducers/productList';
 import './menu.less';
 import menuAction from '../../actions/product';
 import orderAction from '../../actions/order';
-import ProductItem from './../../components/ProductItem';
 import ShopBar from '../shopBar/shopBar';
 import MenuList from '../menuList/menuList';
 
@@ -25,7 +24,7 @@ export interface Ifood {
 
 type PageStateProps = {
   openid: string;
-  shopCarData: [];
+  shopCarData: IproductList[];
   productCategory: [];
   orderList: [];
   totalCount: number;
@@ -63,7 +62,9 @@ class Menu extends Component {
       menuAction.getMenuList();
     }
   }
-
+  componentDidShow(){
+    menuAction.dealWithShopCar({});
+  }
   handleTopClick(current) {
     this.setState({
       current,
@@ -82,39 +83,6 @@ class Menu extends Component {
       size,
     };
     orderAction.getorderList(params);
-  }
-  renderTabsPane() {
-    const { shopCarData, activeKey } = this.props;
-    return shopCarData.map((item: IproductList, index) => {
-      return (
-        <AtTabsPane
-          className="tabsMenu"
-          key={item.type}
-          tabDirection="vertical"
-          current={activeKey}
-          index={index}
-        >
-          <View className="listItem">
-            {item.spus.map((food: Ifood) => {
-              return (
-                <View key={food.id} className="foodItem">
-                  <ProductItem
-                    outIndex={food.outIndex}
-                    chooseCount={food.chooseCount}
-                    idx={food.index}
-                    title={food.name}
-                    desc={food.description}
-                    price={food.price}
-                    imageUrl={food.icon}
-                    productId={food.id}
-                  />
-                </View>
-              );
-            })}
-          </View>
-        </AtTabsPane>
-      );
-    });
   }
   config: Config = {
     navigationBarTitleText: '菜单',

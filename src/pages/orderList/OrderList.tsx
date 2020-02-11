@@ -45,14 +45,14 @@ interface OrderList {
 class OrderList extends Component {
   constructor(props) {
     super(props);
-    if (props.openid) {
-      this.getOrderList();
+
+  }
+  componentDidShow(){
+    if (this.props.openid) {
+      this.getOrderList({ current: 1 });
     }
   }
-
-  getOrderList(data: { type: 'prev' | 'next'; current: number } = { current: 1, type: 'next' }) {
-    console.log(data)
-    const { current, type } = data;
+  getOrderList({ current }) {
     const params = {
       openid: this.props.openid,
       page: current,
@@ -105,7 +105,7 @@ class OrderList extends Component {
             <AtPagination
               customStyle="margin-top:20px;padding-bottom:20px"
               total={total}
-              pageSize={10}
+              pageSize={5}
               onPageChange={this.getOrderList.bind(this)}
               current={page}
             />

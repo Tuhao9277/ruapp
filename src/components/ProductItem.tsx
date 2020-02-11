@@ -48,9 +48,11 @@ class ProductItem extends Taro.Component {
   }
   addSelectItem(id, outIndex) {
     productAction.addSelectItem({ id, outIndex });
+    productAction.dealWithShopCar({});
   }
   minusSelectItem(id, outIndex) {
     productAction.minusSelectItem({ id, outIndex });
+    productAction.dealWithShopCar({});
   }
   render() {
     const {
