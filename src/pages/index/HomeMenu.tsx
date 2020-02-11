@@ -28,6 +28,7 @@ export default class HomeMenu extends Taro.Component<K, T> {
       return gussusLike[0].spus.map((food: Ifood, idx) => {
         return (
           <ProductItem
+            stock={food.stock}
             chooseCount={food.chooseCount}
             key={food.id}
             outIndex={0}
