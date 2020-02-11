@@ -5,6 +5,7 @@ import { View, Text, Image } from '@tarojs/components';
 import './productItem.less';
 import productAction from '../actions/product';
 import addIcon from './../images/add-active.png';
+import add from './../images/add.png';
 import minusIcon from './../images/minus-active.png';
 
 interface K {}
@@ -78,27 +79,35 @@ class ProductItem extends Taro.Component {
           <View className="foodPrice">
             ¥ <Text className="foodPriceHighLight">{price}</Text>
           </View>
-          <View className="selectContent">
-            {chooseCount > 0 && (
+          {stock ? (
+            <View className="selectContent">
+              {chooseCount > 0 && (
+                <Image
+                  style="width:24px;height:24px"
+                  src={minusIcon}
+                  mode="scaleToFill"
+                  onClick={() => {
+                    this.minusSelectItem(idx, outIndex);
+                  }}
+                />
+              )}
+              {chooseCount > 0 && <View className="count">{chooseCount}</View>}
               <Image
                 style="width:24px;height:24px"
-                src={minusIcon}
                 mode="scaleToFill"
+                src={addIcon}
                 onClick={() => {
-                  this.minusSelectItem(idx, outIndex);
+                  this.addSelectItem(idx, outIndex);
                 }}
               />
-            )}
-            {chooseCount > 0 && <View className="count">{chooseCount}</View>}
+            </View>
+          ) : (
             <Image
               style="width:24px;height:24px"
               mode="scaleToFill"
-              src={addIcon}
-              onClick={() => {
-                this.addSelectItem(idx, outIndex);
-              }}
+              src={add}
             />
-          </View>
+          )}
         </View>
       </View>
     );
