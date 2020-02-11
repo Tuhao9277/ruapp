@@ -103,6 +103,7 @@ class ProductItem extends Taro.Component {
             </View>
           ) : (
             <Image
+              className="selectContent"
               style="width:24px;height:24px"
               mode="scaleToFill"
               src={add}
