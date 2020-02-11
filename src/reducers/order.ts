@@ -25,6 +25,8 @@ interface State {
   orderList: [];
   currentOrder: {};
   currentOrderDetail: OrderDetail;
+  page: number;
+  total: number;
 }
 const INITIAL_STATE: State = {
   orderList: [],
@@ -39,7 +41,10 @@ const INITIAL_STATE: State = {
     payStatus: 0,
     buyerOpenid: '',
     orderDetailList: [],
+    createTime: '',
   },
+  page: 1,
+  total: 0,
 };
 
 export default function order(state = INITIAL_STATE, { type, payload }) {
@@ -58,10 +63,12 @@ export default function order(state = INITIAL_STATE, { type, payload }) {
       };
     }
     case GET_ORDER_LIST: {
-      const { data } = payload.data;
+      const { content, page, total } = payload.data;
       return {
         ...state,
-        orderList: data,
+        orderList: content,
+        page,
+        total,
       };
     }
     default:

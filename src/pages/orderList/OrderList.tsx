@@ -2,15 +2,17 @@ import { ComponentClass } from 'react';
 import Taro, { Component, Config } from '@tarojs/taro';
 import { View, Text } from '@tarojs/components';
 import { connect } from '@tarojs/redux';
-import { AtCard } from 'taro-ui'
+import { AtCard, AtPagination } from 'taro-ui';
 import './orderList.less';
 import orderAction from '../../actions/order';
-import { formattedTime } from './../../utils'
-import { PayStatus, OrderStatus } from './../../const/status'
+import { formattedTime } from './../../utils';
+import { PayStatus, OrderStatus } from './../../const/status';
 
 type PageStateProps = {
   openid: string;
   orderList: [];
+  total: number;
+  page: number;
 };
 interface IorderItem {
   orderId: string;
@@ -36,7 +38,8 @@ interface OrderList {
 }
 @connect(({ user, order }) => ({
   openid: user.openid,
-
+  total: order.total,
+  page: order.page,
   orderList: order.orderList,
 }))
 class OrderList extends Component {
@@ -47,11 +50,13 @@ class OrderList extends Component {
     }
   }
 
-  getOrderList(page = 0, size = 10) {
+  getOrderList(data: { type: 'prev' | 'next'; current: number } = { current: 1, type: 'next' }) {
+    console.log(data)
+    const { current, type } = data;
     const params = {
       openid: this.props.openid,
-      page,
-      size,
+      page: current,
+      size: 5,
     };
     orderAction.getorderList(params);
   }
@@ -88,14 +93,23 @@ class OrderList extends Component {
     });
   }
   render() {
-    const {orderList} = this.props
+    const { orderList, total, page } = this.props;
     return (
       <View className="orderListWrapper">
         <Text className="dd-padding">订单</Text>
         {!orderList.length ? (
           <Text className="emptyOrderTip">当前没有订单，快去下单吧</Text>
         ) : (
-          this.renderOrderList()
+          <View>
+            {this.renderOrderList()}
+            <AtPagination
+              customStyle="margin-top:20px;padding-bottom:20px"
+              total={total}
+              pageSize={10}
+              onPageChange={this.getOrderList.bind(this)}
+              current={page}
+            />
+          </View>
         )}
       </View>
     );
