@@ -1,7 +1,7 @@
 import { ComponentClass } from 'react';
 import Taro, { Component } from '@tarojs/taro';
 import { View, Image, Text } from '@tarojs/components';
-import { AtIcon, AtButton, AtFloatLayout, AtRadio } from 'taro-ui';
+import { AtIcon, AtButton, AtFloatLayout, AtRadio, AtInput } from 'taro-ui';
 import { connect } from '@tarojs/redux';
 import { formatterTime } from './../../utils';
 import './order.less';
@@ -29,7 +29,10 @@ interface Adderess {
   recAddress: string;
 }
 type PageOwnProps = {
-  currentOrder: {};
+  currentOrder: {
+    chooseList: OrderListItem[];
+    totalPrice: number;
+  };
   chooseList: OrderListItem[];
   account: number;
   openid: string;
@@ -46,6 +49,7 @@ type PageState = {
   payMethod: string;
   payLoading: boolean;
   prePayLoading: boolean;
+  psInfo: string;
 };
 
 type IProps = PageStateProps & PageDispatchProps & PageOwnProps;
@@ -75,40 +79,25 @@ class Order extends Component {
       payLoading: false,
       orderId: '',
       prePayLoading: false,
+      psInfo: '',
     };
     userAction.getUserInfo({ openid: props.openid });
     userAction.getUserAddress({ buyerId: props.buyerId });
   }
-  handleToAddAddr(){
+
+  //跳转到添加地址页
+  handleToAddAddr() {
     Taro.navigateTo({
-      url:'/pages/address/addressForm'
-    })
-  }
-  renderOrderProduct() {
-    const { chooseList } = this.props.currentOrder;
-    return chooseList.map(({ id, icon, name, description, price, chooseCount }) => {
-      return (
-        <View className="productItemWrapper" key={id}>
-          <Image className="foodOrderImg" mode="scaleToFill" src={icon} />
-          <View className="foodOrderRight">
-            <Text className="foodOrderName">{name}</Text>
-            <Text className="foodOrderDesc two-line">{description}</Text>
-            <View className="foodOrderPrice">
-              <Text>×{chooseCount}</Text>
-              <Text>
-                ¥<Text className="foodOrderPriceHighLight">{price}</Text>
-              </Text>
-            </View>
-          </View>
-        </View>
-      );
+      url: '/pages/address/addressForm',
     });
   }
+  // 更改支付方式
   handleChangePayMethod(value) {
     this.setState({
       payMethod: value,
     });
   }
+  // 支付
   goToPay() {
     const { orderId } = this.state;
     const { openid } = this.props;
@@ -148,11 +137,13 @@ class Order extends Component {
       }
     });
   }
+  // 创建订单
   handlePayDisplay() {
     this.setState({
       prePayLoading: true,
     });
     const { openid, chooseList, currentAddress } = this.props;
+    const { psInfo } = this.state;
     const items = chooseList.map(item => ({
       productId: item.id,
       productQuantity: item.chooseCount,
@@ -161,6 +152,7 @@ class Order extends Component {
       recId: currentAddress.recId,
       openid,
       items,
+      psInfo,
     };
     api.post('order/create', params).then(res => {
       productAction.clearCar({});
@@ -175,6 +167,7 @@ class Order extends Component {
       }
     });
   }
+  // 控制关闭订单页的回调
   handleClosePayMethod() {
     const { orderId } = this.state;
     Taro.redirectTo({
@@ -184,6 +177,32 @@ class Order extends Component {
   handleToUpdateAddr() {
     Taro.navigateTo({
       url: '/pages/address/addressUpdateForm',
+    });
+  }
+  handleChangeRemark(value) {
+    this.setState({
+      psInfo: value,
+    });
+  }
+  // 渲染订单商品
+  renderOrderProduct() {
+    const { chooseList } = this.props.currentOrder;
+    return chooseList.map(({ id, icon, name, description, price, chooseCount }) => {
+      return (
+        <View className="productItemWrapper" key={id}>
+          <Image className="foodOrderImg" mode="scaleToFill" src={icon} />
+          <View className="foodOrderRight">
+            <Text className="foodOrderName">{name}</Text>
+            <Text className="foodOrderDesc two-line">{description}</Text>
+            <View className="foodOrderPrice">
+              <Text>×{chooseCount}</Text>
+              <Text>
+                ¥<Text className="foodOrderPriceHighLight">{price}</Text>
+              </Text>
+            </View>
+          </View>
+        </View>
+      );
     });
   }
   render() {
@@ -216,7 +235,9 @@ class Order extends Component {
           ) : (
             <View className="noAddress">
               当前用户暂无收货地址，请先
-              <Text className="noAddressLink" onClick={this.handleToAddAddr.bind(this)}>添加收货地址</Text>
+              <Text className="noAddressLink" onClick={this.handleToAddAddr.bind(this)}>
+                添加收货地址
+              </Text>
             </View>
           )}
           <View className="dd-padding order">
@@ -231,6 +252,16 @@ class Order extends Component {
               <Text className="totalPrice">
                 ¥ <Text>{totalPrice + this.state.fee}</Text>
               </Text>
+            </View>
+            <View className="remark">
+              <AtInput
+                name="value"
+                title="订单备注"
+                type="text"
+                placeholder="订单备注（选填）"
+                value={this.state.psInfo}
+                onChange={this.handleChangeRemark.bind(this)}
+              />
             </View>
           </View>
           <View className="couponWrapper">

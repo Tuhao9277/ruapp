@@ -178,6 +178,7 @@ class Index extends Component {
       orderAmount,
       orderStatus,
       payStatus,
+      psInfo,
       orderDetailList,
       createTime,
     } = currentOrder;
@@ -273,6 +274,10 @@ class Index extends Component {
                 </Text>
               </View>
               <Text className="couponTip">无可用优惠券</Text>
+            </View>
+            <View className="orderRemark">
+              <Text>备注：</Text>
+            <Text>{psInfo}</Text>
             </View>
           </View>
           <View className="realPriceWrapper">
